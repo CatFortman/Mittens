@@ -18,7 +18,8 @@ namespace GEX
 	Application::Application() :
 		_window(sf::VideoMode(480, 600), "States", sf::Style::Close),
 		_player(),
-		_stateStack(State::Context(_window, _player, _music, _sounds)),
+		_tileInfo("", 0),
+		_stateStack(State::Context(_window, _player, _music, _sounds, _tileInfo)),
 		_statsText()
 	{
 		_window.setKeyRepeatEnabled(false);
@@ -55,6 +56,7 @@ namespace GEX
 		TextureHolder::getInstance().load(TextureID::die1, "Media/Textures/FroggerAtlas.png");
 		TextureHolder::getInstance().load(TextureID::die2, "Media/Textures/FroggerAtlas.png");
 		TextureHolder::getInstance().load(TextureID::die3, "Media/Textures/FroggerAtlas.png");
+		TextureHolder::getInstance().load(TextureID::Map, "Media/sprites/tilesets2.png");
 
 		_statsText.setFont(FontHolder::getInstance().get(FontID::Main));
 		_statsText.setPosition(5.f, 5.f);
