@@ -1,5 +1,4 @@
 #pragma once
-
 #include "SFML\graphics.hpp"
 #include "SceneNode.h"
 #include "CommandQueue.h"
