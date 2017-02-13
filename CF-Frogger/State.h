@@ -19,6 +19,7 @@ namespace GEX
 	class PlayerControl;
 	class MusicPlayer;
 	class SoundPlayer;
+	class TileInfo;
 
 	class State
 	{
@@ -27,12 +28,13 @@ namespace GEX
 
 		struct Context
 		{
-			Context(sf::RenderWindow& window, PlayerControl& player, MusicPlayer& music, SoundPlayer& soundEffect);
+			Context(sf::RenderWindow& window, PlayerControl& player, MusicPlayer& music, SoundPlayer& soundEffect, TileInfo& tildInfo);
 
 			sf::RenderWindow*   window;
 			PlayerControl*      player;
 			MusicPlayer*		music;
 			SoundPlayer*		soundEffect;
+			TileInfo*           tileInfo;
 		};
 
 

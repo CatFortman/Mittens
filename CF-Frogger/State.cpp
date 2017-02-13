@@ -1,15 +1,16 @@
 #include "State.h"
 #include "StateStack.h"
 #include "MusicPlayer.h"
-
+#include "TileInfo.h"
 
 namespace GEX
 {
-	State::Context::Context(sf::RenderWindow& window, PlayerControl& player, MusicPlayer& music, SoundPlayer& soundEffect) :
+	State::Context::Context(sf::RenderWindow& window, PlayerControl& player, MusicPlayer& music, SoundPlayer& soundEffect, TileInfo& tileInfo) :
 		window(&window),
 		player(&player),
 		music(&music),
-		soundEffect(&soundEffect)
+		soundEffect(&soundEffect),
+		tileInfo(&tileInfo)
 	{}
 
 	State::State(StateStack& stack, Context context) :

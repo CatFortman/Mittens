@@ -41,7 +41,8 @@ namespace GEX
 		tree2,
 		die1,
 		die2,
-		die3
+		die3,
+		Map
 
 	};
 
