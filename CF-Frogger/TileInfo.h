@@ -5,16 +5,18 @@
 #include "SpriteNode.h"
 #include "TextureHolder.h"
 
-
 namespace GEX {
 
-	using TitleID = unsigned int;
+	using TileID = unsigned int;
 
 	enum Sheet { tileSize = 64, sheetWidth = 320, sheetHeight = 448 };
-
+	
+	
 	struct TileInfo {
-		TileInfo(const std::string& lTexture, TitleID lId = 0)
-			: mId(0), mDeadly(false)
+
+		TileInfo() {}
+
+		TileInfo(const std::string& lTexture, TileID lId = 0) : mId(0), mDeadly(false), mBlock(false)
 		{
 			if (lTexture == "") { mId = lId; return; }
 			mTexture = lTexture;
@@ -33,11 +35,11 @@ namespace GEX {
 
 		sf::Sprite mSprite;
 
-		TitleID mId;
+		TileID mId;
 		std::string mName;
+		bool mBlock;
 		bool mDeadly;
 
 		std::string mTexture;
-
 	};
 }

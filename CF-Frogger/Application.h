@@ -6,6 +6,7 @@
 #include "MusicPlayer.h"
 #include "SoundPlayer.h"
 #include "TileInfo.h"
+#include "Map.h"
 
 #include "SFML/System/Time.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
@@ -34,7 +35,6 @@ namespace GEX
 		PlayerControl           _player;
 		MusicPlayer				_music;
 		SoundPlayer				_sounds;
-		TileInfo				_tileInfo;
 
 		StateStack              _stateStack;
 

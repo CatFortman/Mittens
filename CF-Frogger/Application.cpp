@@ -18,8 +18,7 @@ namespace GEX
 	Application::Application() :
 		_window(sf::VideoMode(480, 600), "States", sf::Style::Close),
 		_player(),
-		_tileInfo("", 0),
-		_stateStack(State::Context(_window, _player, _music, _sounds, _tileInfo)),
+		_stateStack(State::Context(_window, _player, _music, _sounds)),
 		_statsText()
 	{
 		_window.setKeyRepeatEnabled(false);
