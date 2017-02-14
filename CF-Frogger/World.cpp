@@ -243,12 +243,6 @@ namespace GEX
 		}
 
 		//background
-		sf::Texture& texture = TextureHolder::getInstance().get(TextureID::Background);
-		sf::IntRect textureRect(_worldBounds);
-
-		std::unique_ptr<SpriteNode> _background(new SpriteNode(texture, textureRect));
-		_background->setPosition(_worldBounds.left, _worldBounds.top);
-		_sceneLayers[Background]->attatchChild(std::move(_background));
 
 		// Frog lives
 

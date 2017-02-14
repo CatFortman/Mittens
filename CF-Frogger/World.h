@@ -23,6 +23,7 @@ These additions and modifications are my sole work for prog 1266
 #include "RiverObject.h"
 #include "SpriteNode.h"
 #include "TextureHolder.h"
+#include "Map.h"
 
 #include <vector>
 #include <array>
