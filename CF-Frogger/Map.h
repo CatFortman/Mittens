@@ -16,7 +16,8 @@ namespace GEX {
 	using TileMap = std::unordered_map<TileID, Tile*>;
 	using TileSet = std::unordered_map<TileID, TileInfo*>;
 
-	class Map {
+	class Map : public SceneNode
+	{
 
 	public:
 
@@ -24,7 +25,7 @@ namespace GEX {
 		~Map();
 		Tile*					GetTile(unsigned int l_x, unsigned int l_y) const;
 		TileInfo*				GetDefaultTile();
-		//unsigned int			GetTileSize()const;
+		unsigned int			GetTileSize()const;
 		const					sf::Vector2u& GetMapSize()const;
 		const					sf::Vector2f& GetPlayerStart()const;
 		void					LoadTiles(const std::string& l_path);
@@ -34,11 +35,12 @@ namespace GEX {
 		void					Draw(sf::RenderTarget& window) const;
 		void					PurgeMap();
 		void					PurgeTileSet();
-
-	private:
-
 		// Method for converting 2D coordinates to 1D ints.
 		unsigned int			ConvertCoords(const unsigned int& l_x, const unsigned int& l_y) const;
+		sf::Vector2f			ConvertTileID(TileID) const;
+
+		void					drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const override;
+
 
 	private:
 

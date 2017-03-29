@@ -64,6 +64,7 @@ namespace GEX
 		_player(nullptr)
 		//_switch(nullptr)
 	{
+
 		buildScene();
 
 		//sets the view to the bottom since we will scroll upwards
@@ -303,12 +304,12 @@ namespace GEX
 		}
 
 		// Map
+		std::unique_ptr<Map> map(new Map());
+		_mGameMap = map.get();
 		_mGameMap->LoadMap("Media/Map1.map");
-		_mapNode->setGameMap(*_mGameMap);
-		_sceneLayers[Ground]->attatchChild(std::move(_mapNode));
+		_sceneLayers[Ground]->attatchChild(std::move(map));
 
 		//Switches
-
 
 		// Cat lives
 		sf::Texture& texture = TextureHolder::getInstance().get(TextureID::Life);
@@ -383,7 +384,7 @@ namespace GEX
 
 				// collision: Switch is destroyed
 				switchSprite.destroy();
-				_mapNode->loadNextGameMap();
+				_mGameMap->LoadNext();
 			}
 		}
 
@@ -403,6 +404,71 @@ namespace GEX
 			//		player.setIsDying(true);
 			//	}
 			//}
+		}
+
+		// tile collisions
+		/*sf::Vector2f playerPos = _player->getPosition();
+		Tile* currentTile = _mGameMap->GetTile(playerPos.x, playerPos.y);
+		if (currentTile->mDeadly)
+		{
+			//int currentTileID = _mGameMap->ConvertCoords(playerPos.x, playerPos.y);
+			Cat::Type type = _player->getType();
+
+			switch (type) {
+			case Cat::Type::Up:
+				playerPos.x = playerPos.x + 64;
+				break;
+			case Cat::Type::Down:
+				playerPos.x = playerPos.x - 64;
+				break;
+			case Cat::Type::Left:
+				playerPos.y = playerPos.y + 64;
+				break;
+			default:
+				playerPos.y = playerPos.y - 64;
+				break;
+			}
+
+			_player->setPosition(playerPos);
+		}*/
+
+		unsigned int tileSize = _mGameMap->GetTileSize();
+		int fromX = floor(_player->getBoundingRect().left / tileSize);
+		int toX = floor((_player->getBoundingRect().left + _player->getBoundingRect().width) / tileSize);
+		int fromY = floor(_player->getBoundingRect().top / tileSize);
+		int toY = floor((_player->getBoundingRect().top + _player->getBoundingRect().height) / tileSize);
+		for (int x = fromX; x <= toX; ++x) {
+			for (int y = fromY; y <= toY; ++y) {
+				Tile* tile = _mGameMap->GetTile(x, y);
+				if (!tile) { continue; }
+				sf::FloatRect tileBounds(x * tileSize, y * tileSize,
+					tileSize, tileSize);
+				sf::FloatRect intersection;
+				_player->getBoundingRect().intersects(tileBounds, intersection);
+				float area = intersection.width * intersection.height;
+				std::cout << tile->mProperties->mName << std::endl;
+				if (tile->mProperties->mName == "water") {
+					sf::Vector2f playerPos = _player->getPosition();
+					Cat::Type type = _player->getType();
+
+					switch (type) {
+					case Cat::Type::Up:
+						playerPos.y = playerPos.y - 64;
+						break;
+					case Cat::Type::Down:
+						playerPos.y = playerPos.y + 64;
+						break;
+					case Cat::Type::Left:
+						playerPos.x = playerPos.x - 64;
+						break;
+					default:
+						playerPos.x = playerPos.x + 64;
+						break;
+					}
+
+					_player->setPosition(playerPos);
+				}
+			}
 		}
 	}
 

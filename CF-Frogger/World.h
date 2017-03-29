@@ -129,9 +129,9 @@ namespace GEX
 	//	std::vector<Vehicle*>				_vehicles;
 	//	std::vector<Vehicle*>				_activeEnemies;
 
-		std::unique_ptr<MapSpriteNode>		_mapNode;
-		std::unique_ptr<Map>				_mGameMap;
-
+		//std::unique_ptr<MapSpriteNode>		_mapNode;
+		Map*								_mGameMap;
+		int									_currentTile;
 
 		Switch*								_switch;
 		//std::vector<Switch*>				_switches;

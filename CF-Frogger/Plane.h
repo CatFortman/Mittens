@@ -35,6 +35,7 @@ namespace GEX
 		void					playDeathAnimation();
 
 		void					setType(Cat::Type type);
+		Cat::Type				getType() const;
 
 	private:
 		void					drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const;

@@ -4,8 +4,11 @@
 #include <utility>
 #include <string>
 #include <sstream>
+
 const int MAP_MAX_COLUMNS = 35;
 const int MAP_MAX_ROWS = 40;
+const int TILE_SIZE = 64;
+
 namespace GEX {
 
 	Map::Map() : m_maxMapSize(MAP_MAX_ROWS, MAP_MAX_COLUMNS), m_tileCount(0), m_tileSetCount(0), m_loadNextMap(false), m_tileSet(), m_tileMap()
@@ -33,9 +36,19 @@ namespace GEX {
 		return &m_defaultTile;
 	}
 
+	unsigned int Map::GetTileSize()const
+	{
+		return TILE_SIZE;
+	}
+
 	unsigned int Map::ConvertCoords(const unsigned int& l_x, const unsigned int& l_y) const
 	{
 		return (l_x * m_maxMapSize.x) + l_y; // Row-major.
+	}
+
+	sf::Vector2f Map::ConvertTileID(TileID tileID) const
+	{
+		return sf::Vector2f(0,0);
 	}
 
 	const sf::Vector2u& Map::GetMapSize()const
@@ -147,6 +160,11 @@ namespace GEX {
 				++count;
 			}
 		}
+	}
+
+	void Map::drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const
+	{
+		Draw(target);
 	}
 
 	void Map::PurgeMap()

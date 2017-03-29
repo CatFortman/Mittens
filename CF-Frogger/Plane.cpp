@@ -152,4 +152,9 @@ namespace GEX
 			break;
 		}
 	}
+
+	Cat::Type Cat::getType() const
+	{
+		return _type;
+	}
 }
