@@ -29,14 +29,20 @@ namespace GEX
 		void			setMissionStatus(MissionStatus status);
 		MissionStatus	getMissionStatus() const;
 
+		void			setDirectionFacing(int dir);
+		int				getDirectionFacing() const;
+
 	private:
 		void			initalizeKeyBindings();
 		void			initalizeActionBindings();
-		bool			isEventAction(Action action);
+		bool			isRealTimeAction(Action action);
 
 	private:
-		std::map<sf::Keyboard::Key, Action> _keyBindings;
-		std::map<Action, Command>			_actionBindings;
-		MissionStatus						_missionStatus;
+
+		std::map<sf::Keyboard::Key, Action>     _keyBindings;
+		std::map<Action, Command>				_actionBindings;
+		MissionStatus							_missionStatus;
+
+		int										_directionFacing;
 	};
 }

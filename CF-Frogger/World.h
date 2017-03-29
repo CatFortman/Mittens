@@ -24,6 +24,8 @@ These additions and modifications are my sole work for prog 1266
 #include "SpriteNode.h"
 #include "TextureHolder.h"
 #include "Map.h"
+#include "MapSpriteNode.h"
+#include "Switch.h"
 
 #include <vector>
 #include <array>
@@ -42,8 +44,10 @@ namespace GEX
 
 		void			update(sf::Time deltaTime);
 
+		void			setView();
+
 		void			draw();
-		Frog*			getPlayer() { return _player; }
+		Cat*			getPlayer() { return _player; }
 		CommandQueue&	getCommandQueue();
 
 		bool			hasAlivePlayer() const;
@@ -51,7 +55,7 @@ namespace GEX
 
 	private:
 
-		struct SpawnPointVehicle
+	/*	struct SpawnPointVehicle
 		{
 			SpawnPointVehicle(Vehicle::Type type, float _x, float _y) :
 				type(type),
@@ -60,10 +64,10 @@ namespace GEX
 			Vehicle::Type type;
 			float		x;
 			float		y;
-		};
+		};*/
 
 
-		struct SpawnPointRiverObject
+	/*	struct SpawnPointRiverObject
 		{
 			SpawnPointRiverObject(RiverObject::Type type, float _x, float _y) :
 				type(type),
@@ -72,7 +76,7 @@ namespace GEX
 			RiverObject::Type type;
 			float		x;
 			float		y;
-		};
+		};*/
 
 	private:
 
@@ -87,10 +91,10 @@ namespace GEX
 
 		void			spawnEnemies();
 		void			addEnemies();
-		void			addEnemy(Vehicle::Type type, float relX, float relY);
-		void			addEnemy(RiverObject::Type type, float relX, float relY);
-		void			addEnemy(SpawnPointVehicle point);
-		void			addEnemy(SpawnPointRiverObject point);
+	//	void			addEnemy(Vehicle::Type type, float relX, float relY);
+		//void			addEnemy(RiverObject::Type type, float relX, float relY);
+		//void			addEnemy(SpawnPointVehicle point);
+		//void			addEnemy(SpawnPointRiverObject point);
 
 		void			handleCollisions();
 		void			destroyEnemiesOutsideView();
@@ -115,17 +119,24 @@ namespace GEX
 		sf::FloatRect						_worldBounds;
 		sf::Vector2f						_spawnPosition;
 		float								_scrollSpeed;
-		Frog*								_player;
+		Cat*								_player;
 
 		sf::Clock							_vehicleSpawnTimer;
 		sf::Clock							_riverSpawnTimer;
 
-		sf::Texture&						texture2 = TextureHolder::getInstance().get(TextureID::FrogLives);
-		sf::IntRect							textureRect2 = sf::IntRect(395, 100, 39, 40);
+	//	std::deque<SpawnPointVehicle>		_vehicleSpawnPoints;
+	//	std::deque<SpawnPointRiverObject>	_riverSpawnPoints;
+	//	std::vector<Vehicle*>				_vehicles;
+	//	std::vector<Vehicle*>				_activeEnemies;
 
-		std::deque<SpawnPointVehicle>		_vehicleSpawnPoints;
-		std::deque<SpawnPointRiverObject>	_riverSpawnPoints;
-		std::vector<Vehicle*>				_vehicles;
-		std::vector<Vehicle*>				_activeEnemies;
+		std::unique_ptr<MapSpriteNode>		_mapNode;
+		std::unique_ptr<Map>				_mGameMap;
+
+
+		Switch*								_switch;
+		//std::vector<Switch*>				_switches;
+
+		std::vector<SpriteNode*>			_lives;
+		int									_lifeX;
 	};
 }

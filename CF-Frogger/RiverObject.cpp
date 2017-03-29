@@ -8,103 +8,85 @@
 #include <cassert>
 namespace GEX
 {
-	const std::map<RiverObject::Type, RiverObjectData> table = initializeRiverObjectData();
+	const std::map<Ally::Type, AllyData> table = initializeAllyData();
 
-	TextureID toTextureID(RiverObject::Type type)
+	sf::Vector2i allySource(2, 0);
+
+	TextureID toTextureID(Ally::Type type)
 	{
-		return TextureID::tree1;
+		return TextureID::Animals;
 	}
 
-	RiverObject::RiverObject(Type type) :
+	Ally::Ally(Type type) :
 		_type(type),
 		_sprite(TextureHolder::getInstance().get(table.at(type).texture), table.at(type).textureRect),
-		_directionIndex(0),
-		_isMarkedForRemoval(false)
+		_isMarkedForRemoval(false),
+		_walkSpeed(),
+		_directionTimer()
 	{
 		// set up the animation
 		centerOrigin(_sprite);
 
-		// TextureHolder::getInstance().load(TextureID::AIRFrog, "../media/Textures/Idles.png");
+		// TextureHolder::getInstance().load(TextureID::animal, "../media/Textures/animalscrbetween.png");
 		sf::FloatRect bounds = _sprite.getLocalBounds();
 		_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 	}
 
-	unsigned int RiverObject::getCategory() const
+	unsigned int Ally::getCategory() const
 	{
-		switch (_type)
-		{
-		case GEX::RiverObject::Type::turtles1:
-			return Category::turtles;
-			break;
-		case GEX::RiverObject::Type::turtles2:
-			return Category::turtles;
-			break;
-		case GEX::RiverObject::Type::turtles3:
-			return Category::turtles;
-			break;
-		case GEX::RiverObject::Type::turtles4:
-			return Category::turtles;
-			break;
-		case GEX::RiverObject::Type::threeTurtles1:
-			return Category::turtles;
-			break;
-		case GEX::RiverObject::Type::threeTurtles2:
-			return Category::turtles;
-			break;
-		case GEX::RiverObject::Type::threeTurtles3:
-			return Category::turtles;
-			break;
-		case GEX::RiverObject::Type::threeTurtles4:
-			return Category::turtles;
-			break;
-		case GEX::RiverObject::Type::tree1:
-			return Category::logs;
-			break;
-		case GEX::RiverObject::Type::tree2:
-			return Category::logs;
-			break;
-		default:
-			assert(0); //missing type
-			break;
-		}
-		return Category::none;
+		return Category::ally;
 	}
 
-	sf::FloatRect RiverObject::getBoundingRect() const
+	sf::FloatRect Ally::getBoundingRect() const
 	{
 		return getWorldTransform().transformRect(_sprite.getGlobalBounds());
 	}
 
-	void RiverObject::drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const
+	void Ally::drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const
 	{
 		target.draw(_sprite, state);
 	}
 
-	float RiverObject::getMaxSpeed() const
-	{
-		return table.at(_type).speed;
-	}
-
-	void RiverObject::movementUpdate(sf::Time dt)
+	void Ally::movementUpdate(sf::Time dt)
 	{
 		const std::vector<Direction>& directions = table.at(_type).directions;
 		if (!directions.empty())
 		{
-			float distanceToTravel = directions.at(_directionIndex).distance;
-			if (_travelDistance > distanceToTravel)
-			{
-				_directionIndex = (_directionIndex + 1) % directions.size();
-				_travelDistance = 0;
+			// set the type
+			setType(_type);
+			setDirection(_type);
+
+			// set texture
+			_sprite.setTextureRect(sf::IntRect(allySource.x * 32, allySource.y * 32, 32, 32));
+
+			// set ai velocity
+			switch (_type) {
+			case Type::frogUp:
+			case Type::bunnyUp:
+			case Type::chickUp:
+			case Type::seagullUp:
+				setVelocity(0, -(table.at(_type).speed));
+				break;
+			case Type::frogDown:
+			case Type::bunnyDown:
+			case Type::chickDown:
+			case Type::seagullDown:
+				setVelocity(0, (table.at(_type).speed));
+				break;
+			case Type::frogLeft:
+			case Type::bunnyLeft:
+			case Type::chickLeft:
+			case Type::seagullLeft:
+				setVelocity(-(table.at(_type).speed), 0);
+				break;
+			default:
+				setVelocity((table.at(_type).speed), 0);
+				break;
 			}
-			_travelDistance += getMaxSpeed() * dt.asSeconds();
-			float dirAngle = directions.at(_directionIndex).angle + 90.f;
-			float vx = getMaxSpeed() * GEX::cos(dirAngle);
-			float vy = getMaxSpeed() * GEX::sin(dirAngle);
-			setVelocity(vx, vy);
 		}
 	}
 
-	void RiverObject::updateCurrent(sf::Time dt, CommandQueue& commands)
+	void Ally::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
 		if (isDestroyed())
 		{
@@ -115,9 +97,156 @@ namespace GEX
 		Entity::updateCurrent(dt, commands);
 	}
 
-	bool RiverObject::isMarkedForRemoval() const
+	void Ally::setType(Ally::Type type)
+	{
+		_type = type;
+
+		// change fram after 300 milliseconds
+		sf::Time walkTime;
+		walkTime = _walkSpeed.getElapsedTime();
+		if (walkTime.asMilliseconds() >= 300)
+		{
+			allySource.x++;
+			if (allySource.x * 32 >= allySource.x * 3)
+			{
+				// set ai velocity
+				switch (_type) {
+				case Type::wCatDown:
+				case Type::wCatLeft:
+				case Type::wCatRight:
+				case Type::wCatUp:
+				case Type::chickDown:
+				case Type::chickLeft:
+				case Type::chickRight:
+				case Type::chickUp:
+					allySource.x = 0;
+					break;
+				case Type::seagullDown:
+				case Type::seagullLeft:
+				case Type::seagullRight:
+				case Type::seagullUp:
+					allySource.x = 3;
+					break;
+				case Type::frogDown:
+				case Type::frogLeft:
+				case Type::frogRight:
+				case Type::frogUp:
+					allySource.x = 6;
+					break;
+				default:
+					allySource.x = 9;
+					break;
+				}
+			}
+			_walkSpeed.restart();
+		}
+
+		switch (_type) {
+		case Type::frogUp:
+		case Type::bunnyUp:
+		case Type::chickUp:
+		case Type::seagullUp:
+			allySource.y = 3;
+			break;
+		case Type::frogDown:
+		case Type::bunnyDown:
+		case Type::chickDown:
+		case Type::seagullDown:
+			allySource.y = 0;
+			break;
+		case Type::frogLeft:
+		case Type::bunnyLeft:
+		case Type::chickLeft:
+		case Type::seagullLeft:
+			allySource.y = 1;
+			break;
+		default:
+			allySource.y = 2;
+			break;
+		}
+	}
+
+	void Ally::setDirection(Ally::Type type)
+	{
+		_type = type;
+
+		// change type of animal thus direction
+		sf::Time time;
+		time = _directionTimer.getElapsedTime();
+		if (time.asMilliseconds() >= 900)
+		{
+			// set ai direction
+			switch (_type) {
+			case Type::frogUp:
+				_type = Type::frogRight;
+				_directionTimer.restart();
+				break;
+			case Type::bunnyUp:
+				_type = Type::bunnyRight;
+				_directionTimer.restart();
+				break;
+			case Type::chickUp:
+				_type = Type::chickRight;
+				_directionTimer.restart();
+				break;
+			case Type::seagullUp:
+				_type = Type::seagullRight;
+				_directionTimer.restart();
+				break;
+			case Type::frogDown:
+				_type = Type::frogLeft;
+				_directionTimer.restart();
+				break;
+			case Type::bunnyDown:
+				_type = Type::bunnyLeft;
+				_directionTimer.restart();
+				break;
+			case Type::chickDown:
+				_type = Type::chickLeft;
+				_directionTimer.restart();
+				break;
+			case Type::seagullDown:
+				_type = Type::seagullLeft;
+				_directionTimer.restart();
+				break;
+			case Type::frogLeft:
+				_type = Type::frogUp;
+				_directionTimer.restart();
+				break;
+			case Type::bunnyLeft:
+				_type = Type::bunnyUp;
+				_directionTimer.restart();
+				break;
+			case Type::chickLeft:
+				_type = Type::chickUp;
+				_directionTimer.restart();
+				break;
+			case Type::seagullLeft:
+				_type = Type::seagullUp;
+				_directionTimer.restart();
+				break;
+			case Type::frogRight:
+				_type = Type::frogDown;
+				_directionTimer.restart();
+				break;
+			case Type::bunnyRight:
+				_type = Type::bunnyDown;
+				_directionTimer.restart();
+				break;
+			case Type::chickRight:
+				_type = Type::chickDown;
+				_directionTimer.restart();
+				break;
+			default:
+				_type = Type::seagullDown;
+				_directionTimer.restart();
+				break;
+			}
+		}
+	}
+
+	bool Ally::isMarkedForRemoval() const
 	{
 		return isDestroyed();
 	}
 }
-

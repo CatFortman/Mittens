@@ -38,6 +38,7 @@
     <ClCompile Include="JsonFrameParser.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MapSpriteNode.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="MusicPlayer.cpp" />
     <ClCompile Include="ParticleNode.cpp" />
@@ -53,6 +54,7 @@
     <ClCompile Include="SpriteNode.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StateStack.cpp" />
+    <ClCompile Include="Switch.cpp" />
     <ClCompile Include="TextNode.cpp" />
     <ClCompile Include="TextureHolder.cpp" />
     <ClCompile Include="Tile.cpp" />
@@ -84,6 +86,7 @@
     <ClInclude Include="JsonFrameParser.hpp" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MapSpriteNode.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="MusicPlayer.h" />
     <ClInclude Include="Partcile.h" />
@@ -101,6 +104,7 @@
     <ClInclude Include="State.h" />
     <ClInclude Include="StateIdentifiers.h" />
     <ClInclude Include="StateStack.h" />
+    <ClInclude Include="Switch.h" />
     <ClInclude Include="TextNode.h" />
     <ClInclude Include="TextureHolder.h" />
     <ClInclude Include="Tile.h" />

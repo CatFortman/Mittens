@@ -44,7 +44,7 @@ namespace GEX
 
 	void Entity::movePlayer(sf::Vector2f pixels)
 	{
-		_frogMove = true;
+		_CatMove = true;
 		setPixels(pixels);
 	}
 
@@ -85,10 +85,10 @@ namespace GEX
 
 	void Entity::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
-		if (_frogMove)
+		if (_CatMove)
 		{
 			setPosition(getPosition() + _pixels);
-			_frogMove = false;
+			_CatMove = false;
 		}
 		move(_velocity * dt.asSeconds());
 	}

@@ -9,28 +9,28 @@
 #include <cassert>
 namespace GEX
 {
-	const std::map<Frog::Type, FrogData> table = initializeFrogData();
+	const std::map<Cat::Type, CatData> table = initializeCatData();
 
-	TextureID toTextureID(Frog::Type type)
+	sf::Vector2i source(2, 0);
+
+	TextureID toTextureID(Cat::Type type)
 	{
-		return TextureID::Frog;
+		return TextureID::Cats;
 	}
 
-	Frog::Frog(Type type) :
+	Cat::Cat(Type type) :
 		_type(type),
 		_sprite(TextureHolder::getInstance().get(table.at(type).texture), table.at(type).textureRect),
-		_directionIndex(0),
-		_jumping(false),
 		_dying(false),
-		_jumpTimer(0),
 		_points(0),
 		_deathTimer(),
+		_walkSpeed(),
 		_isMarkedForRemoval(false)
 	{
 		// set up the animation
 		centerOrigin(_sprite);
 
-		// TextureHolder::getInstance().load(TextureID::AIRFrog, "../media/Textures/Idles.png");
+		// TextureHolder::getInstance().load(TextureID::AIRCat, "../media/Textures/Idles.png");
 		sf::FloatRect bounds = _sprite.getLocalBounds();
 		_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 
@@ -40,72 +40,44 @@ namespace GEX
 		attatchChild(std::move(healthDisplay));
 	}
 
-	unsigned int Frog::getCategory() const
+	unsigned int Cat::getCategory() const
 	{
 		return Category::playerCharacter;
 	}
 
-	sf::FloatRect Frog::getBoundingRect() const
+	sf::FloatRect Cat::getBoundingRect() const
 	{
 		return getWorldTransform().transformRect(_sprite.getGlobalBounds());
 	}
 
-	void Frog::drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const
+	void Cat::drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const
 	{
 		target.draw(_sprite, state);
 	}
 
-	void Frog::movementUpdate(sf::Time dt)
+	void Cat::movementUpdate(sf::Time dt)
 	{
+		_sprite.setTextureRect(sf::IntRect(source.x * 48, source.y * 48, 48, 48));
 	}
 
-	void Frog::adjustFrogLives()
+	void Cat::adjustCatLives()
 	{
-		//_frogLife1->isMarkedForRemoval();
-		//		_frogLife1->destroy();
+		//_CatLife1->isMarkedForRemoval();
+		//		_CatLife1->destroy();
 	}
 
-	void Frog::playDeathAnimation()
+	void Cat::playDeathAnimation()
 	{
-		if (_type == Frog::Type::Die1)
-		{
-			_deathTimer.restart();
-			_type = Frog::Type::Die2;
-			_sprite.setTexture(TextureHolder::getInstance().get(table.at(Frog::Type::Die1).texture));
-			_sprite.setTextureRect(table.at(Frog::Type::Die1).textureRect);
-		}
-		if ((_type == Frog::Type::Die2) && (_deathTimer.getElapsedTime() >= sf::milliseconds(500)))
-		{
-			_deathTimer.restart();
-			_type = Frog::Type::Die3;
-			_sprite.setTexture(TextureHolder::getInstance().get(table.at(Frog::Type::Die2).texture));
-			_sprite.setTextureRect(table.at(Frog::Type::Die2).textureRect);
-		}
-		if ((_type == Frog::Type::Die3) && (_deathTimer.getElapsedTime() >= sf::milliseconds(500)))
-		{
-			_deathTimer.restart();
-			_type = Frog::Type::Idle;
-			_sprite.setTexture(TextureHolder::getInstance().get(table.at(Frog::Type::Die3).texture));
-			_sprite.setTextureRect(table.at(Frog::Type::Die3).textureRect);
-		}
-		if ((_type == Frog::Type::Idle) && (_deathTimer.getElapsedTime() >= sf::milliseconds(500)))
-		{
-			_deathTimer.restart();
-			_sprite.setTexture(TextureHolder::getInstance().get(table.at(Frog::Type::Idle).texture));
-			_sprite.setTextureRect(table.at(Frog::Type::Idle).textureRect);
-			setIsDying(false);
-			setIsRespawning(true);
-		}
+		setIsDying(false);
+		setIsRespawning(true);
 	}
 
-	void Frog::updateCurrent(sf::Time dt, CommandQueue& commands)
+	void Cat::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
-		// check if Frogger died
-		
+		// check if Catger died
+
 		if (!isDying() && !isRespawing())
 		{
-			checkIfJumping();
-			_jumpTimer++;
 			movementUpdate(dt);
 			Entity::updateCurrent(dt, commands);
 		}
@@ -116,61 +88,68 @@ namespace GEX
 		updateTexts();
 	}
 
-	void Frog::updateTexts()
+	void Cat::updateTexts()
 	{
 		/*_healthDisplay->setText(std::to_string(getHitPoints()) + "HP");
 		_healthDisplay->setPosition(0.f, 50.f);
 		_healthDisplay->setRotation(-getRotation());*/
 	}
 
-	bool Frog::isMarkedForRemoval() const
+	bool Cat::isMarkedForRemoval() const
 	{
 		return isDestroyed();
 	}
 
-	void Frog::isJumping(bool jumping)
-	{
-		_jumping = jumping;
-	}
 
-	void Frog::setIsDying(bool dying)
+	void Cat::setIsDying(bool dying)
 	{
 		_dying = dying;
 	}
 
-	bool Frog::isDying()
+	bool Cat::isDying()
 	{
 		return _dying;
 	}
 
-	void Frog::setIsRespawning(bool respawning)
+	void Cat::setIsRespawning(bool respawning)
 	{
 		_respawning = respawning;
 	}
 
-	bool Frog::isRespawing()
+	bool Cat::isRespawing()
 	{
 		return _respawning;
 	}
 
-	void Frog::checkIfJumping()
-	{
-		if (_jumpTimer == 15)
-		{
-			_jumpTimer = 0;
-			_sprite.setTexture(TextureHolder::getInstance().get(table.at(Frog::Type::Idle).texture));
-			_sprite.setTextureRect(table.at(Frog::Type::Idle).textureRect);
-		}
-		if (_jumping)
-		{
-			_sprite.setTexture(TextureHolder::getInstance().get(table.at(Frog::Type::Jumping).texture));
-			_sprite.setTextureRect(table.at(Frog::Type::Jumping).textureRect);
-			isJumping(false);
-		}
-	}
-
-	void Frog::setType(Frog::Type type)
+	void Cat::setType(Cat::Type type)
 	{
 		_type = type;
+
+		sf::Time time;
+		time = _walkSpeed.getElapsedTime();
+		if (time.asMilliseconds() >= 200)
+		{
+			source.x++;
+			if (source.x * 48 >= 144)
+			{
+				source.x = 0;
+			}
+			_walkSpeed.restart();
+		}
+
+		switch (_type) {
+		case Type::Up:
+			source.y = 3;
+			break;
+		case Type::Down:
+			source.y = 0;
+			break;
+		case Type::Left:
+			source.y = 1;
+			break;
+		default: 
+			source.y = 2;
+			break;
+		}
 	}
 }

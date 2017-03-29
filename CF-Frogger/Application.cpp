@@ -16,7 +16,7 @@ namespace GEX
 	const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
 	Application::Application() :
-		_window(sf::VideoMode(480, 600), "States", sf::Style::Close),
+		_window(sf::VideoMode(1000, 600), "States", sf::Style::Close),
 		_player(),
 		_stateStack(State::Context(_window, _player, _music, _sounds)),
 		_statsText()
@@ -34,9 +34,9 @@ namespace GEX
 		TextureHolder::getInstance().load(TextureID::Particle, "Media/Textures/particle.png");
 		TextureHolder::getInstance().load(TextureID::Explosion, "Media/Textures/Explosion.png");
 		TextureHolder::getInstance().load(TextureID::Background, "Media/Textures/background.jpg");
-		TextureHolder::getInstance().load(TextureID::Frog, "Media/Textures/FroggerAtlas.png");
-		TextureHolder::getInstance().load(TextureID::FrogJump, "Media/Textures/FroggerAtlas.png");
-		TextureHolder::getInstance().load(TextureID::FrogLives, "Media/Textures/FroggerAtlas.png");
+		TextureHolder::getInstance().load(TextureID::Cat, "Media/Textures/FroggerAtlas.png");
+		TextureHolder::getInstance().load(TextureID::CatJump, "Media/Textures/FroggerAtlas.png");
+		TextureHolder::getInstance().load(TextureID::CatLives, "Media/Textures/FroggerAtlas.png");
 		TextureHolder::getInstance().load(TextureID::Car, "Media/Textures/FroggerAtlas.png");
 		TextureHolder::getInstance().load(TextureID::RaceCarL, "Media/Textures/FroggerAtlas.png");
 		TextureHolder::getInstance().load(TextureID::RaceCarR, "Media/Textures/FroggerAtlas.png");
@@ -56,6 +56,11 @@ namespace GEX
 		TextureHolder::getInstance().load(TextureID::die2, "Media/Textures/FroggerAtlas.png");
 		TextureHolder::getInstance().load(TextureID::die3, "Media/Textures/FroggerAtlas.png");
 		TextureHolder::getInstance().load(TextureID::Map, "Media/sprites/tilesets2.png");
+		TextureHolder::getInstance().load(TextureID::Cats, "Media/sprites/colorCatSpriteSheet.png");
+		TextureHolder::getInstance().load(TextureID::Switch, "Media/sprites/cubes.png");
+		TextureHolder::getInstance().load(TextureID::Life, "Media/sprites/life.png");
+		TextureHolder::getInstance().load(TextureID::Animals, "Media/sprites/animalscrbetween.png");
+		TextureHolder::getInstance().load(TextureID::Raccoon, "Media/sprites/racoon.png");
 
 		_statsText.setFont(FontHolder::getInstance().get(FontID::Main));
 		_statsText.setPosition(5.f, 5.f);

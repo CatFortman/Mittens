@@ -163,7 +163,7 @@
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
-	"filename": "frogIcon.png",
+	"filename": "CatIcon.png",
 	"frame": {"x":395,"y":100,"w":39,"h":40},
 	"rotated": false,
 	"trimmed": true,
@@ -291,7 +291,7 @@
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "FroggerAtlas.png",
+	"image": "CatgerAtlas.png",
 	"format": "RGBA8888",
 	"size": {"w":468,"h":141},
 	"scale": "1",

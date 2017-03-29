@@ -4,24 +4,50 @@
 
 namespace GEX 
 {
-	struct FrogMover {
+	struct CatMover {
 	
-		FrogMover(float vx, float vy, float degrees) : pixels(vx, vy), rotation(degrees) {}
-		void operator() (Frog& Frog, sf::Time) const {
-			Frog.movePlayer(pixels);
-			Frog.setRotation(rotation);
-			Frog.isJumping(true);
+		CatMover(float vx, float vy, int direction) : velocity(vx, vy), dir(direction) {}
+		void operator() (Cat& Cat, sf::Time) const {
+
+			switch (dir) {
+			case 0:
+				Cat.setType(Cat::Type::Down);
+				break;
+			case 1:
+				Cat.setType(Cat::Type::Left);
+				break;
+			case 2:
+				Cat.setType(Cat::Type::Right);
+				break;
+			default:
+				Cat.setType(Cat::Type::Up);
+				break;
+			}
+
+			Cat.setVelocity(velocity);
 		}
 
+		int dir;
 		float rotation;
-		sf::Vector2f pixels;
+		sf::Vector2f velocity;
 	};
 
 	PlayerControl::PlayerControl() :
-		_missionStatus(MissionStatus::Active)
+		_missionStatus(MissionStatus::Active),
+		_directionFacing(0)
 	{
 		initalizeKeyBindings();
 		initalizeActionBindings();
+	}
+
+	void PlayerControl::setDirectionFacing(int dir)
+	{
+		_directionFacing = dir;
+	}
+
+	int PlayerControl::getDirectionFacing() const
+	{
+		return _directionFacing;
 	}
 
 	void PlayerControl::handleEvent(const sf::Event& events, CommandQueue & commands)
@@ -31,7 +57,7 @@ namespace GEX
 			// check if key is bound to action
 			// and that its not handled as a real event
 			auto found = _keyBindings.find(events.key.code);
-			if (found != _keyBindings.end() && isEventAction(found->second))
+			if (found != _keyBindings.end() && !isRealTimeAction(found->second))
 			{
 				commands.push(_actionBindings[found->second]);
 			}
@@ -42,12 +68,12 @@ namespace GEX
 	{
 		for (auto pair : _keyBindings)
 		{
-			if (sf::Keyboard::isKeyPressed(pair.first) && !isEventAction(pair.second))
+			if (sf::Keyboard::isKeyPressed(pair.first) && isRealTimeAction(pair.second))
 				commands.push(_actionBindings[pair.second]);
 		}
 	}
 
-	bool PlayerControl::isEventAction(Action action)
+	bool PlayerControl::isRealTimeAction(Action action)
 	{
 		switch (action)
 		{
@@ -72,12 +98,12 @@ namespace GEX
 
 	void PlayerControl::initalizeActionBindings()
 	{
-		const float playerSpeed = 40;
+		const float playerSpeed = 90;
 
-		_actionBindings[Action::moveLeft].action		= derivedAction<Frog>(FrogMover(-playerSpeed, 0, -90));
-		_actionBindings[Action::moveRight].action       = derivedAction<Frog>(FrogMover(playerSpeed, 0, 90));
-		_actionBindings[Action::moveUp].action			= derivedAction<Frog>(FrogMover(0, -playerSpeed, 0));
-		_actionBindings[Action::moveDown].action		= derivedAction<Frog>(FrogMover(0, playerSpeed, 180));
+		_actionBindings[Action::moveLeft].action		= derivedAction<Cat>(CatMover(-playerSpeed, 0, 1));
+		_actionBindings[Action::moveRight].action       = derivedAction<Cat>(CatMover(playerSpeed, 0, 2));
+		_actionBindings[Action::moveUp].action			= derivedAction<Cat>(CatMover(0, -playerSpeed, 3));
+		_actionBindings[Action::moveDown].action		= derivedAction<Cat>(CatMover(0, playerSpeed, 0));
 		
 		for (auto& pair : _actionBindings)
 			pair.second.category = Category::playerCharacter;

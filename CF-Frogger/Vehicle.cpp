@@ -8,112 +8,229 @@
 #include <cassert>
 namespace GEX
 {
-	const std::map<Vehicle::Type, VehicleData> table = initializeVehicleData();
+	const std::map<Enemy::Type, EnemyData> table = initializeEnemyData();
 
-	TextureID toTextureID(Vehicle::Type type)
+	sf::Vector2i enemySource(2, 0);
+
+	TextureID toTextureID(Enemy::Type type)
 	{
-		switch (type) {
-		case Vehicle::Type::Car:
-			return TextureID::Car;
-		case Vehicle::Type::RaceCarL:
-			return TextureID::RaceCarL;
-		case Vehicle::Type::RaceCarR:
-			return TextureID::RaceCarR;
-		case Vehicle::Type::Tractor:
-			return TextureID::Tractor;
-		case Vehicle::Type::Truck:
-			return TextureID::Truck;
+		switch (type)
+		{
+		case Enemy::Type::raccoonDown:
+		case Enemy::Type::raccoonLeft:
+		case Enemy::Type::raccoonRight:
+		case Enemy::Type::raccoonUp:
+			return TextureID::Raccoon;
+			break;
+		default:
+			return TextureID::Animals;
+			break;
 		}
-		return TextureID::Car;
 	}
 
-	Vehicle::Vehicle(Type type) :
+	Enemy::Enemy(Type type) :
 		_type(type),
 		_sprite(TextureHolder::getInstance().get(table.at(type).texture), table.at(type).textureRect),
-		_directionIndex(0),
-		_isMarkedForRemoval(false)
+		_isMarkedForRemoval(false),
+		_walkSpeed(),
+		_directionTimer()
 	{
 		// set up the animation
 		centerOrigin(_sprite);
 
-		// TextureHolder::getInstance().load(TextureID::AIRFrog, "../media/Textures/Idles.png");
+		// TextureHolder::getInstance().load(TextureID::animal, "../media/Textures/animalscrbetween.png");
 		sf::FloatRect bounds = _sprite.getLocalBounds();
 		_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 	}
 
-	unsigned int Vehicle::getCategory() const
+	unsigned int Enemy::getCategory() const
 	{
-		switch (_type)
+		return Category::enemy;
+	}
+
+	sf::FloatRect Enemy::getBoundingRect() const
+	{
+		return getWorldTransform().transformRect(_sprite.getGlobalBounds());
+	}
+
+	void Enemy::drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const
+	{
+		target.draw(_sprite, state);
+	}
+
+	void Enemy::movementUpdate(sf::Time dt)
+	{
+		const std::vector<Direction>& directions = table.at(_type).directions;
+		if (!directions.empty())
 		{
-		case GEX::Vehicle::Type::Car:
-			return Category::vehicle;
+			// set the type
+			setType(_type);
+			setDirection(_type);
+
+			// set texture
+			_sprite.setTextureRect(sf::IntRect(enemySource.x * 32, enemySource.y * 32, 32, 32));
+
+			// set ai velocity
+			switch (_type) {
+			case Type::wBirdUp:
+			case Type::mouseUp:
+			case Type::roosterUp:
+			case Type::raccoonUp:
+				setVelocity(0,-(table.at(_type).speed));
+				break;
+			case Type::wBirdDown:
+			case Type::mouseDown:
+			case Type::roosterDown:
+			case Type::raccoonDown:
+				setVelocity(0, (table.at(_type).speed));
+				break;
+			case Type::wBirdLeft:
+			case Type::mouseLeft:
+			case Type::roosterLeft:
+			case Type::raccoonLeft:
+				setVelocity(-(table.at(_type).speed), 0);
+				break;
+			default:
+				setVelocity((table.at(_type).speed), 0);
+				break;
+			}			
+		}
+	}
+
+	void Enemy::updateCurrent(sf::Time dt, CommandQueue& commands)
+	{
+		if (isDestroyed())
+		{
+			return;
+		}
+
+		movementUpdate(dt);
+		Entity::updateCurrent(dt, commands);
+	}
+
+	void Enemy::setType(Enemy::Type type)
+	{
+		_type = type;
+
+		// change fram after 300 milliseconds
+		sf::Time walkTime;
+		walkTime = _walkSpeed.getElapsedTime();
+		if (walkTime.asMilliseconds() >= 300)
+		{
+			enemySource.x++;
+			if (enemySource.x * 32 >= 96)
+			{
+				enemySource.x = 0;
+			}
+			_walkSpeed.restart();
+		}
+
+		switch (_type) {
+		case Type::wBirdUp:
+		case Type::mouseUp:
+		case Type::roosterUp:
+		case Type::raccoonUp:
+			enemySource.y = 3;
 			break;
-		case GEX::Vehicle::Type::RaceCarR:
-			return Category::vehicle;
+		case Type::wBirdDown:
+		case Type::mouseDown:
+		case Type::roosterDown:
+		case Type::raccoonDown:
+			enemySource.y = 0;
 			break;
-		case GEX::Vehicle::Type::RaceCarL:
-			return Category::vehicle;
-			break;
-		case GEX::Vehicle::Type::Tractor:
-			return Category::vehicle;
-			break;
-		case GEX::Vehicle::Type::Truck:
-			return Category::vehicle;
+		case Type::wBirdLeft:
+		case Type::mouseLeft:
+		case Type::roosterLeft:
+		case Type::raccoonLeft:
+			enemySource.y = 1;
 			break;
 		default:
-			assert(0); //missing type
+			enemySource.y = 2;
 			break;
 		}
-		return Category::none;
-}
+	}
 
-sf::FloatRect Vehicle::getBoundingRect() const
-{
-	return getWorldTransform().transformRect(_sprite.getGlobalBounds());
-}
-
-void Vehicle::drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const
-{
-	target.draw(_sprite, state);
-}
-
-float Vehicle::getMaxSpeed() const
-{
-	return table.at(_type).speed;
-}
-
-void Vehicle::movementUpdate(sf::Time dt)
-{
-	const std::vector<Direction>& directions = table.at(_type).directions;
-	if (!directions.empty())
+	void Enemy::setDirection(Enemy::Type type)
 	{
-		float distanceToTravel = directions.at(_directionIndex).distance;
-		if (_travelDistance > distanceToTravel)
+		_type = type;
+
+		// change type of animal thus direction
+		sf::Time time;
+		time = _directionTimer.getElapsedTime();
+		if (time.asMilliseconds() >= 900)
 		{
-			_directionIndex = (_directionIndex + 1) % directions.size();
-			_travelDistance = 0;
+			// set ai direction
+			switch (_type) {
+			case Type::wBirdUp:
+				_type = Type::wBirdRight;
+				_directionTimer.restart();
+				break;
+			case Type::mouseUp:
+				_type = Type::mouseRight;
+				_directionTimer.restart();
+				break;
+			case Type::roosterUp:
+				_type = Type::roosterRight;
+				_directionTimer.restart();
+				break;
+			case Type::raccoonUp:
+				_type = Type::raccoonRight;
+				_directionTimer.restart();
+				break;
+			case Type::wBirdDown:
+				_type = Type::wBirdLeft;
+				_directionTimer.restart();
+				break;
+			case Type::mouseDown:
+				_type = Type::mouseLeft;
+				_directionTimer.restart();
+				break;
+			case Type::roosterDown:
+				_type = Type::roosterLeft;
+				_directionTimer.restart();
+				break;
+			case Type::raccoonDown:
+				_type = Type::raccoonLeft;
+				_directionTimer.restart();
+				break;
+			case Type::wBirdLeft:
+				_type = Type::wBirdUp;
+				_directionTimer.restart();
+				break;
+			case Type::mouseLeft:
+				_type = Type::mouseUp;
+				_directionTimer.restart();
+				break;
+			case Type::roosterLeft:
+				_type = Type::roosterUp;
+				_directionTimer.restart();
+				break;
+			case Type::raccoonLeft:
+				_type = Type::raccoonUp;
+				_directionTimer.restart();
+				break;
+			case Type::wBirdRight:
+				_type = Type::wBirdDown;
+				_directionTimer.restart();
+				break;
+			case Type::mouseRight:
+				_type = Type::mouseDown;
+				_directionTimer.restart();
+				break;
+			case Type::roosterRight:
+				_type = Type::roosterDown;
+				_directionTimer.restart();
+				break;
+			default:
+				_type = Type::raccoonDown;
+				_directionTimer.restart();
+				break;
+			}
 		}
-		_travelDistance += getMaxSpeed() * dt.asSeconds();
-		float dirAngle = directions.at(_directionIndex).angle + 90.f;
-		float vx = getMaxSpeed() * GEX::cos(dirAngle);
-		float vy = getMaxSpeed() * GEX::sin(dirAngle);
-		setVelocity(vx, vy);
 	}
-}
 
-void Vehicle::updateCurrent(sf::Time dt, CommandQueue& commands)
-{
-	if (isDestroyed())
+	bool Enemy::isMarkedForRemoval() const
 	{
-		return;
+		return isDestroyed();
 	}
-
-	movementUpdate(dt);
-	Entity::updateCurrent(dt, commands);
-}
-
-bool Vehicle::isMarkedForRemoval() const
-{
-	return isDestroyed();
-}
 }

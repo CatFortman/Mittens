@@ -8,7 +8,7 @@ namespace GEX
 	};
 
 	enum class TextureID {
-		Frog,
+		Cat,
 		MenuScreen,
 		Face,
 		Background,
@@ -22,8 +22,8 @@ namespace GEX
 		ButtonPressed,
 		Particle,
 		Explosion,
-		FrogLives,
-		FrogJump,
+		CatLives,
+		CatJump,
 		Car, 
 		RaceCarL, 
 		RaceCarR, 
@@ -42,8 +42,12 @@ namespace GEX
 		die1,
 		die2,
 		die3,
-		Map
-
+		Map,
+		Cats,
+		Switch,
+		Life,
+		Animals,
+		Raccoon
 	};
 
 	enum class SoundEffectID {

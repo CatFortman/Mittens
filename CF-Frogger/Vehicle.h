@@ -9,24 +9,40 @@ namespace GEX
 {
 	class TextNode;
 
-	class Vehicle : public Entity
+	class Enemy : public Entity
 	{
 	public:
-		enum class  Type { Car, RaceCarL, RaceCarR, Tractor, Truck};
+		enum class  Type { wBirdDown, 
+						   wBirdLeft, 
+						   wBirdRight, 
+						   wBirdUp, 
+						   mouseDown, 
+						   mouseLeft, 
+						   mouseRight, 
+						   mouseUp, 
+						   roosterDown, 
+						   roosterLeft, 
+						   roosterRight, 
+						   roosterUp,
+						   raccoonDown,
+						   raccoonLeft,
+						   raccoonRight,
+						   raccoonUp};
 
 	public:
-		Vehicle(Type type = Type::Car);
-		//Frog(Frogs type, const TextureHolder& textures);
+		Enemy(Type type = Type::raccoonUp);
+		//Enemy(Enemy type, const TextureHolder& textures);
 
-		virtual					~Vehicle() {};
+		virtual					~Enemy() {};
 
 		unsigned int			getCategory() const override;
-
-		float					getMaxSpeed() const;
 
 		sf::FloatRect			getBoundingRect() const override;
 
 		bool					isMarkedForRemoval() const;
+
+		void					setType(Enemy::Type type);
+		void					setDirection(Enemy::Type type);
 
 	private:
 		void					drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const;
@@ -38,8 +54,8 @@ namespace GEX
 		Type					_type;
 		sf::Sprite				_sprite;
 
-		int						_directionIndex;
-		float					_travelDistance;
+		sf::Clock				_walkSpeed;
+		sf::Clock				_directionTimer;
 	
 		bool					_isMarkedForRemoval;
 	};

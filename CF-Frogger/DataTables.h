@@ -19,6 +19,7 @@ These additions and modifications are my sole work for prog 1266
 #include "Partcile.h"
 #include "Vehicle.h"
 #include "RiverObject.h"
+#include "Switch.h"
 
 #include <map>
 #include <vector>
@@ -27,43 +28,52 @@ namespace GEX
 {
 	struct Direction
 	{
-		Direction(float a, float d);
-		float angle;
-		float distance;
+		Direction(Enemy::Type et);
+		Enemy::Type eType;
+
+		Direction(Ally::Type at);
+		Ally::Type aType;
 	};
 
-	struct FrogData
+	struct CatData
 	{
 		int						hitPoints;
 		TextureID				texture;
-		std::vector<Direction>  directions; // vector describes path of Frog
 		sf::IntRect				textureRect;
 	};
 
 	struct ParticleData
 	{
-		sf::Color								color;
-		sf::Time								lifetime;
+		sf::Color				color;
+		sf::Time				lifetime;
 	};
 
-	struct VehicleData
+	struct EnemyData
 	{
 		TextureID				texture;
-		std::vector<Direction>  directions; // vector describes path of Vehicle
+		std::vector<Direction>  directions; // vector describes path of the enemies
 		sf::IntRect				textureRect;
 		float					speed;
 	};
 
-	struct RiverObjectData
+	struct AllyData
 	{
 		TextureID				texture;
-		std::vector<Direction>  directions; // vector describes path of river object
+		std::vector<Direction>  directions; // vector describes path of the allies
 		sf::IntRect				textureRect;
 		float					speed;
 	};
 
-	std::map<Frog::Type, FrogData>					initializeFrogData();
+	struct SwitchData
+	{
+		int						hitPoints;
+		TextureID				texture;
+		sf::IntRect				textureRect;
+	};
+
+	std::map<Cat::Type, CatData>					initializeCatData();
 	std::map<Particle::Type, ParticleData>			initializeParticleData();
-	std::map<Vehicle::Type, VehicleData>			initializeVehicleData();
-	std::map<RiverObject::Type, RiverObjectData>    initializeRiverObjectData();
+	std::map<Enemy::Type, EnemyData>				initializeEnemyData();
+	std::map<Ally::Type, AllyData>					initializeAllyData();
+	std::map<Switch::Type, SwitchData>				initializeSwitchData();
 }

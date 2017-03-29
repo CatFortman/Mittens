@@ -47,7 +47,7 @@ namespace GEX
 
 		sf::Vector2f    _pixels;
 
-		bool			_frogMove;
+		bool			_CatMove;
 
 		float			_angularVelocity;
 		sf::Vector2f	_velocity;

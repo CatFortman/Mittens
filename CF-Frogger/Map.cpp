@@ -3,14 +3,16 @@
 #include <fstream>
 #include <utility>
 #include <string>
-
+#include <sstream>
+const int MAP_MAX_COLUMNS = 35;
+const int MAP_MAX_ROWS = 40;
 namespace GEX {
 
-	Map::Map() : m_maxMapSize(32, 32), m_tileCount(0), m_tileSetCount(0), m_loadNextMap(false)
+	Map::Map() : m_maxMapSize(MAP_MAX_ROWS, MAP_MAX_COLUMNS), m_tileCount(0), m_tileSetCount(0), m_loadNextMap(false), m_tileSet(), m_tileMap()
 	{
 		//default tile?
-		//gamemap =?
-		//LoadTiles();
+		//gamemap =?		
+		LoadTiles("Tiles.cfg");
 	}
 
 	Map::~Map()
@@ -20,7 +22,7 @@ namespace GEX {
 		//m_context->m_gameMap = nullptr;
 	}
 
-	Tile* Map::GetTile(unsigned int l_x, unsigned int l_y)
+	Tile* Map::GetTile(unsigned int l_x, unsigned int l_y) const
 	{
 		auto itr = m_tileMap.find(ConvertCoords(l_x, l_y));
 		return(itr != m_tileMap.end() ? itr->second : nullptr);
@@ -31,7 +33,7 @@ namespace GEX {
 		return &m_defaultTile;
 	}
 
-	unsigned int Map::ConvertCoords(const unsigned int& l_x, const unsigned int& l_y)
+	unsigned int Map::ConvertCoords(const unsigned int& l_x, const unsigned int& l_y) const
 	{
 		return (l_x * m_maxMapSize.x) + l_y; // Row-major.
 	}
@@ -46,37 +48,64 @@ namespace GEX {
 		return m_playerStart;
 	}
 
-	void Map::LoadMap(const std::string & type)
+	void Map::LoadMap(const std::string & path)
 	{
-		if (type == "TILE")
+		std::ifstream file;
+		file.open(path);
+		if (!file.is_open()) {
+			std::cout << "! Failed loading map file: "
+				<< path << std::endl;
+			return;
+		}
+		std::string line;
+		while (std::getline(file, line))
 		{
-			int tileId = 0;
-			std::cin >> tileId;
-			if (tileId < 0)
+			std::cout << line << std::endl;
+
+			if (line[0] == '|') { continue; }
+			std::stringstream keystream(line);
+			std::string type;
+			keystream >> type;
+			if (type == "TILE")
 			{
-				std::cout << "! Bad tile id: " << tileId << std::endl;
+				int tileId = 0;
+				keystream >> tileId;
+				if (tileId < 0)
+				{
+					std::cout << "! Bad tile id: " << tileId << std::endl;
+				}
+				auto itr = m_tileSet.find(tileId);
+				if (itr == m_tileSet.end())
+				{
+					std::cout << "! Tile id(" << tileId << ") was not found in tileset." << std::endl;
+				}
+				sf::Vector2i tileCoords;
+				keystream >> tileCoords.x >> tileCoords.y;
+				if (tileCoords.x > m_maxMapSize.x || tileCoords.y > m_maxMapSize.y)
+				{
+					std::cout << "! Tile is out of range: " << tileCoords.x << " " << tileCoords.y << std::endl;
+				}
+				Tile* tile = new Tile();  // Bind properties of a tile from a set.  
+				tile->mProperties = itr->second;
+
+				std::cout << "Tile " << ConvertCoords(tileCoords.x, tileCoords.y) << std::endl;
+				if (ConvertCoords(tileCoords.x, tileCoords.y) > 1395)
+					std::cout << "Tile " << ConvertCoords(tileCoords.x, tileCoords.y) << std::endl;
+				if (!m_tileMap.emplace(ConvertCoords(tileCoords.x, tileCoords.y), tile).second)
+				{    // Duplicate tile detected!    
+					std::cout << "! Duplicate tile in Load Map ! : " << tileCoords.x << "" << tileCoords.y << std::endl;
+					delete tile;
+					tile = nullptr;
+				}
 			}
-			auto itr = m_tileSet.find(tileId);
-			if (itr == m_tileSet.end())
+			else if (type == "SIZE")
 			{
-				std::cout << "! Tile id(" << tileId << ") was not found in tileset." << std::endl;
+				keystream >> m_maxMapSize.x >> m_maxMapSize.y;
 			}
-			sf::Vector2i tileCoords;
-			std::cin >> tileCoords.x >> tileCoords.y;
-			if (tileCoords.x > m_maxMapSize.x || tileCoords.y > m_maxMapSize.y)
+			else if (type == "NEXTMAP")
 			{
-				std::cout << "! Tile is out of range: " << tileCoords.x << " " << tileCoords.y << std::endl;
+				keystream >> m_nextMap;
 			}
-			Tile* tile = new Tile();  // Bind properties of a tile from a set.  
-			tile->mProperties = itr->second;
-			if (!m_tileMap.emplace(ConvertCoords(tileCoords.x, tileCoords.y), tile).second)
-			{    // Duplicate tile detected!    
-				std::cout << "! Duplicate tile! : " << tileCoords.x << "" << tileCoords.y << std::endl;
-				delete tile;
-				tile = nullptr;
-			}
-			else if (type == "SIZE") { std::cin >> m_maxMapSize.x >> m_maxMapSize.y; }
-			else if (type == "NEXTMAP") { std::cin >> m_nextMap; }
 		}
 	}
 
@@ -86,28 +115,25 @@ namespace GEX {
 			PurgeMap();
 			m_loadNextMap = false;
 			if (m_nextMap != "") {
-				LoadMap("media/maps/" + m_nextMap);
+				LoadMap("Media/" + m_nextMap);
 			}
 			/*else {
 				m_currentState->GetStateManager()->SwitchTo(StateType::GameOver);
 			}*/
 			m_nextMap = "";
 		}
-		sf::View view = window.getView();
-		sf::FloatRect viewSpace = sf::FloatRect(view.getCenter() - view.getSize() / 2.f, view.getSize());
-		m_background.setPosition(viewSpace.left, viewSpace.top);
 	}
 
-	void Map::Draw(sf::RenderWindow& window)
+	void Map::Draw(sf::RenderTarget& window) const
 	{
 		sf::View view = window.getView();
 		sf::FloatRect viewSpace = sf::FloatRect(view.getCenter() - view.getSize() / 2.f, view.getSize());
 		sf::Vector2i tileBegin(
-			floor(viewSpace.left / Sheet::tileSize),
-			floor(viewSpace.top / Sheet::tileSize));
+			floor(viewSpace.top / Sheet::tileSize),
+			floor(viewSpace.left / Sheet::tileSize));
 		sf::Vector2i tileEnd(
-			ceil((viewSpace.left + viewSpace.width) / Sheet::tileSize),
-			ceil((viewSpace.top + viewSpace.height) / Sheet::tileSize));
+			ceil((viewSpace.top + viewSpace.width) / Sheet::tileSize) + Sheet::tileSize,
+			ceil((viewSpace.left + viewSpace.height) / Sheet::tileSize) +   Sheet::tileSize);
 		unsigned int count = 0;
 		for (int x = tileBegin.x; x <= tileEnd.x; ++x) {
 			for (int y = tileBegin.y; y <= tileEnd.y; ++y) {
@@ -115,8 +141,8 @@ namespace GEX {
 				Tile* tile = GetTile(x, y);
 				if (!tile) { continue; }
 				sf::Sprite& sprite = tile->mProperties->mSprite;
-				sprite.setPosition(x * Sheet::tileSize,
-					y * Sheet::tileSize);
+				sprite.setPosition((y * Sheet::tileSize), (x * Sheet::tileSize));
+
 				window.draw(sprite);
 				++count;
 			}
@@ -126,9 +152,6 @@ namespace GEX {
 	void Map::PurgeMap()
 	{
 		m_tileCount = 0;
-		for (auto &itr : m_tileMap) {
-			delete itr.second;
-		}
 		m_tileMap.clear();
 	}
 
@@ -152,17 +175,22 @@ namespace GEX {
 		}
 		std::string line;
 		while (std::getline(file, line)) {
-			if (line[0] == '|') { continue; }
-			std::getline(std::cin, line);
+			if (line[0] == '|')
+			{
+				continue;
+			}
+			std::stringstream keystream(line);
 			int tileId;
-			std::cin >> tileId;
-			if (tileId < 0) { continue; }
+			keystream >> tileId;
+			if (tileId < 0)
+			{
+				continue;
+			}
 			TileInfo* tile = new TileInfo("TileSheet", tileId);
-			std::cin >> tile->mName >> tile->mBlock >> tile->mDeadly;
+			keystream >> tile->mName >> tile->mBlock >> tile->mDeadly;
 			if (!m_tileSet.emplace(tileId, tile).second) {
 				// Duplicate tile detected!
-				std::cout << "! Duplicate tile type: "
-					<< tile->mName << std::endl;
+				std::cout << "! Duplicate tile type: " << tile->mName << std::endl;
 				delete tile;
 			}
 		}

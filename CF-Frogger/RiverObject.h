@@ -9,24 +9,46 @@ namespace GEX
 {
 	class TextNode;
 
-	class RiverObject : public Entity
+	class Ally : public Entity
 	{
 	public:
-		enum class  Type { tree1, tree2, turtles1, turtles2, turtles3, turtles4, threeTurtles1, threeTurtles2, threeTurtles3, threeTurtles4};
+		enum class  Type {
+			wCatDown,
+			wCatLeft,
+			wCatRight,
+			wCatUp,
+			frogDown,
+			frogLeft,
+			frogRight,
+			frogUp,
+			bunnyDown,
+			bunnyLeft,
+			bunnyRight,
+			bunnyUp,
+			chickDown,
+			chickLeft,
+			chickRight,
+			chickUp,
+			seagullDown,
+			seagullLeft,
+			seagullRight,
+			seagullUp
+		};
 
 	public:
-		RiverObject(Type type = Type::tree1);
-		//Frog(Frogs type, const TextureHolder& textures);
+		Ally(Type type = Type::frogUp);
+		//Enemy(Enemy type, const TextureHolder& textures);
 
-		virtual					~RiverObject() {};
+		virtual					~Ally() {};
 
 		unsigned int			getCategory() const override;
-
-		float					getMaxSpeed() const;
 
 		sf::FloatRect			getBoundingRect() const override;
 
 		bool					isMarkedForRemoval() const;
+
+		void					setType(Ally::Type type);
+		void					setDirection(Ally::Type type);
 
 	private:
 		void					drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const;
@@ -38,8 +60,8 @@ namespace GEX
 		Type					_type;
 		sf::Sprite				_sprite;
 
-		int						_directionIndex;
-		float					_travelDistance;
+		sf::Clock				_walkSpeed;
+		sf::Clock				_directionTimer;
 
 		bool					_isMarkedForRemoval;
 	};

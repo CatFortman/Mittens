@@ -9,35 +9,32 @@ namespace GEX
 {
 	class TextNode;
 
-	class Frog : public Entity
+	class Cat : public Entity
 	{
 	public:
-		enum class  Type{ Idle, Jumping, Die1, Die2, Die3};
+		enum class  Type { Down, Left, Right, Up };
 		
 	public:
-								Frog(Type type = Type::Idle);
-								//Frog(Frogs type, const TextureHolder& textures);
+								Cat(Type type = Type::Up);
+								//Cat(Cats type, const TextureHolder& textures);
 
-		virtual					~Frog() {};
+		virtual					~Cat() {};
 
 		unsigned int			getCategory() const override;
 
 		sf::FloatRect			getBoundingRect() const override;
 
 		bool					isMarkedForRemoval() const;
-		void					adjustFrogLives();
+		void					adjustCatLives();
 		void					setIsDying(bool dying);
 		bool					isDying();
 
 		void					setIsRespawning(bool dying);
 		bool					isRespawing();
 
-		void					isJumping(bool jumping);
-		void					checkIfJumping();
-
 		void					playDeathAnimation();
 
-		void					setType(Frog::Type type);
+		void					setType(Cat::Type type);
 
 	private:
 		void					drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const;
@@ -52,14 +49,10 @@ namespace GEX
 		sf::Sprite				_sprite;
 
 		sf::Clock				_deathTimer;
+		sf::Clock				_walkSpeed;
 
 		bool				    _respawning;
 		bool					_dying;
-		bool					_jumping;
-		int						_jumpTimer;
-
-		int						_directionIndex;
-		float					_travelDistance;
 
 		bool					_isMarkedForRemoval;
 
