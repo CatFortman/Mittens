@@ -78,15 +78,6 @@ namespace GEX
 			float		y;
 		};*/
 
-		struct TileCollisionElement {
-			TileCollisionElement(float l_area, TileInfo* l_info,
-				const sf::FloatRect& l_bounds) :m_area(l_area),
-				m_tile(l_info), m_tileBounds(l_bounds) {}
-			float m_area;
-			TileInfo* m_tile;
-			sf::FloatRect m_tileBounds;
-		};
-
 	private:
 
 		void			buildScene();
@@ -141,8 +132,7 @@ namespace GEX
 
 		//std::unique_ptr<MapSpriteNode>		_mapNode;
 		Map*								_mGameMap;
-
-		std::vector<TileCollisionElement>   _tileCollisions;
+		int									_currentTile;
 
 		Switch*								_switch;
 		//std::vector<Switch*>				_switches;

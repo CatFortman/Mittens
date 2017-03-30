@@ -63,6 +63,7 @@ namespace GEX {
 
 	void Map::LoadMap(const std::string & path)
 	{
+
 		std::ifstream file;
 		file.open(path);
 		if (!file.is_open()) {
@@ -101,10 +102,10 @@ namespace GEX {
 				Tile* tile = new Tile();  // Bind properties of a tile from a set.  
 				tile->mProperties = itr->second;
 
-				std::cout << "Tile " << ConvertCoords(tileCoords.x, tileCoords.y) << std::endl;
+				/*std::cout << "Tile " << ConvertCoords(tileCoords.y, tileCoords.x) << std::endl;
 				if (ConvertCoords(tileCoords.x, tileCoords.y) > 1395)
-					std::cout << "Tile " << ConvertCoords(tileCoords.x, tileCoords.y) << std::endl;
-				if (!m_tileMap.emplace(ConvertCoords(tileCoords.x, tileCoords.y), tile).second)
+					std::cout << "Tile " << ConvertCoords(tileCoords.x, tileCoords.y) << std::endl;*/
+				if (!m_tileMap.emplace(ConvertCoords(tileCoords.y, tileCoords.x), tile).second)
 				{    // Duplicate tile detected!    
 					std::cout << "! Duplicate tile in Load Map ! : " << tileCoords.x << "" << tileCoords.y << std::endl;
 					delete tile;
@@ -142,11 +143,18 @@ namespace GEX {
 		sf::View view = window.getView();
 		sf::FloatRect viewSpace = sf::FloatRect(view.getCenter() - view.getSize() / 2.f, view.getSize());
 		sf::Vector2i tileBegin(
-			floor(viewSpace.top / Sheet::tileSize),
+			floor(viewSpace.left / Sheet::tileSize),
+			floor(viewSpace.top / Sheet::tileSize));
+		sf::Vector2i tileEnd(
+			ceil((viewSpace.left + viewSpace.height) / Sheet::tileSize) + Sheet::tileSize,
+			ceil((viewSpace.top + viewSpace.width) / Sheet::tileSize) +   Sheet::tileSize);
+
+		/*floor(viewSpace.top / Sheet::tileSize),
 			floor(viewSpace.left / Sheet::tileSize));
 		sf::Vector2i tileEnd(
 			ceil((viewSpace.top + viewSpace.width) / Sheet::tileSize) + Sheet::tileSize,
-			ceil((viewSpace.left + viewSpace.height) / Sheet::tileSize) +   Sheet::tileSize);
+			ceil((viewSpace.left + viewSpace.height) / Sheet::tileSize) +   Sheet::tileSize);*/
+
 		unsigned int count = 0;
 		for (int x = tileBegin.x; x <= tileEnd.x; ++x) {
 			for (int y = tileBegin.y; y <= tileEnd.y; ++y) {
@@ -154,7 +162,7 @@ namespace GEX {
 				Tile* tile = GetTile(x, y);
 				if (!tile) { continue; }
 				sf::Sprite& sprite = tile->mProperties->mSprite;
-				sprite.setPosition((y * Sheet::tileSize), (x * Sheet::tileSize));
+				sprite.setPosition((x * Sheet::tileSize), (y * Sheet::tileSize));
 
 				window.draw(sprite);
 				++count;
