@@ -343,10 +343,61 @@ namespace GEX
 		//addEnemies();
 
 		// Switches
-		std::unique_ptr<Switch> blue1(new Switch(Switch::Type::GreenLeft));
-		_switch = blue1.get();
-		_switch->setPosition(320, 2368);
+		std::unique_ptr<Switch> blue1(new Switch(Switch::Type::BlueLeft));
+		Switch* s1 = blue1.get();
+		s1->setPosition(320, 2304);
 		_sceneLayers[Ground]->attatchChild(std::move(blue1));
+
+		_switches.push_back(s1);
+
+		std::unique_ptr<Switch> red1(new Switch(Switch::Type::RedLeft));
+		Switch* s2 = red1.get();
+		s2->setPosition(192, 1600);
+		_sceneLayers[Ground]->attatchChild(std::move(red1));
+
+		_switches.push_back(s2);
+
+		std::unique_ptr<Switch> green1(new Switch(Switch::Type::GreenLeft));
+		Switch* s3 = green1.get();
+		s3->setPosition(1472, 1024);
+		_sceneLayers[Ground]->attatchChild(std::move(green1));
+
+		_switches.push_back(s3);
+
+		std::unique_ptr<Switch> blue2(new Switch(Switch::Type::BlueLeft));
+		Switch* s4 = blue2.get();
+		s4->setPosition(2112, 2432);
+		_sceneLayers[Ground]->attatchChild(std::move(blue2));
+
+		_switches.push_back(s4);
+
+		std::unique_ptr<Switch> red2(new Switch(Switch::Type::RedLeft));
+		Switch* s5 = red2.get();
+		s5->setPosition(2112, 1664);
+		_sceneLayers[Ground]->attatchChild(std::move(red2));
+
+		_switches.push_back(s5);
+
+		std::unique_ptr<Switch> green2(new Switch(Switch::Type::GreenLeft));
+		Switch* s6 = green2.get();
+		s6->setPosition(192, 832);
+		_sceneLayers[Ground]->attatchChild(std::move(green2));
+
+		_switches.push_back(s6);
+
+		std::unique_ptr<Switch> blue3(new Switch(Switch::Type::BlueLeft));
+		Switch* s7 = blue3.get();
+		s7->setPosition(1024, 832);
+		_sceneLayers[Ground]->attatchChild(std::move(blue3));
+
+		_switches.push_back(s7);
+
+		std::unique_ptr<Switch> red3(new Switch(Switch::Type::RedLeft));
+		Switch* s8 = red3.get();
+		s8->setPosition(2112, 192);
+		_sceneLayers[Ground]->attatchChild(std::move(red3));
+
+		_switches.push_back(s8);
 
 		// Idle
 		std::unique_ptr<Cat> Cat(new Cat(Cat::Type::Down));

@@ -148,7 +148,7 @@ namespace GEX
 		std::vector<TileCollisionElement>   _tileCollisions;
 
 		Switch*								_switch;
-		//std::vector<Switch*>				_switches;
+		std::vector<Switch*>				_switches;
 
 		std::vector<SpriteNode*>			_lives;
 		int									_lifeX;

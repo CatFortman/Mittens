@@ -118,6 +118,7 @@ namespace GEX {
 			}
 			else if (type == "NEXTMAP")
 			{
+				m_nextMap = "";
 				keystream >> m_nextMap;
 			}
 		}
@@ -134,7 +135,6 @@ namespace GEX {
 			/*else {
 				m_currentState->GetStateManager()->SwitchTo(StateType::GameOver);
 			}*/
-			m_nextMap = "";
 		}
 	}
 

@@ -98,7 +98,7 @@ namespace GEX
 
 	void PlayerControl::initalizeActionBindings()
 	{
-		const float playerSpeed = 90;
+		const float playerSpeed = 130;
 
 		_actionBindings[Action::moveLeft].action		= derivedAction<Cat>(CatMover(-playerSpeed, 0, 1));
 		_actionBindings[Action::moveRight].action       = derivedAction<Cat>(CatMover(playerSpeed, 0, 2));
