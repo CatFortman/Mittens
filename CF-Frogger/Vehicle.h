@@ -43,6 +43,7 @@ namespace GEX
 
 		void					setType(Enemy::Type type);
 		void					setDirection(Enemy::Type type);
+		void					setSource(sf::Vector2i s);
 
 	private:
 		void					drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const;
@@ -53,6 +54,8 @@ namespace GEX
 
 		Type					_type;
 		sf::Sprite				_sprite;
+
+		sf::Vector2i			_source;
 
 		sf::Clock				_walkSpeed;
 		sf::Clock				_directionTimer;

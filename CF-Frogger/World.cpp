@@ -92,7 +92,9 @@ namespace GEX
 
 		destroyEnemiesOutsideView();
 		// handle collsions
-		handleCollisions();
+		handleEntityCollisions();
+		checkTileCollions();
+		handleTileCollisions();
 
 		// remove all destroyed enemies
 		_sceneGraph.removeWrecks();
@@ -341,10 +343,10 @@ namespace GEX
 		//addEnemies();
 
 		// Switches
-		std::unique_ptr<Switch> blue1(new Switch(Switch::Type::GreenLeft));
+		/*std::unique_ptr<Switch> blue1(new Switch(Switch::Type::GreenLeft));
 		_switch = blue1.get();
 		_switch->setPosition(_spawnPosition);
-		_sceneLayers[Ground]->attatchChild(std::move(blue1));
+		_sceneLayers[Ground]->attatchChild(std::move(blue1));*/
 
 		// Idle
 		std::unique_ptr<Cat> Cat(new Cat(Cat::Type::Down));
@@ -374,7 +376,73 @@ namespace GEX
 		return area;
 	}
 
-	void World::handleCollisions()
+	void World::checkTileCollions()
+	{
+		// tile collisions
+
+		unsigned int tileSize = _mGameMap->GetTileSize();
+		int fromX = floor(_player->getBoundingRect().left / tileSize);
+		int toX = floor((_player->getBoundingRect().left + _player->getBoundingRect().width) / tileSize);
+		int fromY = floor(_player->getBoundingRect().top / tileSize);
+		int toY = floor((_player->getBoundingRect().top + _player->getBoundingRect().height) / tileSize);
+		for (int x = fromX; x <= toX; ++x) {
+			for (int y = fromY; y <= toY; ++y) {
+				Tile* tile = _mGameMap->GetTile(x, y);
+				if (!tile) { continue; }
+				sf::FloatRect tileBounds(x * tileSize, y * tileSize,
+					tileSize, tileSize);
+
+				if (tile->mProperties->mName == "water") {
+					// check how much the bounding rects intersect
+					float area = interSectionAmount(_player->getBoundingRect(), tileBounds);
+					std::cout << area << std::endl;
+
+					// add tile collision to collision vector
+					TileCollisionElement e(area, tile->mProperties, tileBounds);
+					_tileCollisions.emplace_back(e);
+
+					//std::cout << tile->mProperties->mName << std::endl;
+				}
+			}
+		}
+	}
+
+	void World::handleTileCollisions()
+	{
+		float area = 0;
+		if (!_tileCollisions.empty()) {
+			// add all area of water together
+			for (auto it = std::begin(_tileCollisions); it != std::end(_tileCollisions); ++it) {
+				area = area + it->m_area;
+			}
+
+			// check if mittens is in too much water
+			if (area >= INTERSECTION_AMOUNT) {
+				sf::Vector2f playerPos = _player->getPosition();
+				Cat::Type type = _player->getType();
+
+				switch (type) {
+				case Cat::Type::Up:
+					playerPos.y = playerPos.y + 15;
+					break;
+				case Cat::Type::Down:
+					playerPos.y = playerPos.y - 15;
+					break;
+				case Cat::Type::Left:
+					playerPos.x = playerPos.x + 15;
+					break;
+				default:
+					playerPos.x = playerPos.x - 15;
+					break;
+				}
+
+				_player->setPosition(playerPos);
+			}
+			_tileCollisions.clear();
+		}
+	}
+
+	void World::handleEntityCollisions()
 	{
 		// build list of all pairs of colliding scenenodes
 		std::set<SceneNode::pair> collisionPairs;
@@ -418,48 +486,7 @@ namespace GEX
 			//}
 		}
 
-		// tile collisions
 
-		unsigned int tileSize = _mGameMap->GetTileSize();
-		int fromX = floor(_player->getBoundingRect().left / tileSize);
-		int toX = floor((_player->getBoundingRect().left + _player->getBoundingRect().width) / tileSize);
-		int fromY = floor(_player->getBoundingRect().top / tileSize);
-		int toY = floor((_player->getBoundingRect().top + _player->getBoundingRect().height) / tileSize);
-		for (int x = fromX; x <= toX; ++x) {
-			for (int y = fromY; y <= toY; ++y) {
-				Tile* tile = _mGameMap->GetTile(x, y);
-				if (!tile) { continue; }
-				sf::FloatRect tileBounds(x * tileSize, y * tileSize,
-					tileSize, tileSize);
-
-				// check how much the bounding rects intersect
-				float area = interSectionAmount(_player->getBoundingRect(), tileBounds);
-				std::cout << area << std::endl;
-
-				//std::cout << tile->mProperties->mName << std::endl;
-				if (tile->mProperties->mName == "water" && (area >= INTERSECTION_AMOUNT)) {
-					sf::Vector2f playerPos = _player->getPosition();
-					Cat::Type type = _player->getType();
-
-					switch (type) {
-					case Cat::Type::Up:
-						playerPos.y = playerPos.y + 15;
-						break;						
-					case Cat::Type::Down:			
-						playerPos.y = playerPos.y - 15;
-						break;						
-					case Cat::Type::Left:			
-						playerPos.x = playerPos.x + 15;
-						break;						
-					default:						
-						playerPos.x = playerPos.x - 15;
-						break;
-					}
-
-					_player->setPosition(playerPos);
-				}
-			}
-		}
 	}
 
 	void World::respawnPlayer()

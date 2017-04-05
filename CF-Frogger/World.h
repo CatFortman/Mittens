@@ -106,7 +106,10 @@ namespace GEX
 		//void			addEnemy(SpawnPointRiverObject point);
 
 		float			interSectionAmount(sf::FloatRect a, sf::FloatRect b);
-		void			handleCollisions();
+		void			handleEntityCollisions();
+		void			checkTileCollions();
+		void			handleTileCollisions();
+
 		void			destroyEnemiesOutsideView();
 
 	private:

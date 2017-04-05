@@ -240,81 +240,113 @@ namespace GEX
 		data[Enemy::Type::wBirdDown].textureRect = sf::IntRect( 0, 192, 32, 32);
 		data[Enemy::Type::wBirdDown].speed = 90.f;
 		data[Enemy::Type::wBirdDown].directions.push_back(Direction(Enemy::Type::wBirdDown));
+		data[Enemy::Type::wBirdDown].source = sf::Vector2i(3, 0);
+		data[Enemy::Type::wBirdDown].endOfFrame = 160;
 
 		data[Enemy::Type::wBirdLeft].texture = TextureID::Animals;
 		data[Enemy::Type::wBirdLeft].textureRect = sf::IntRect(32, 192, 32, 32);
 		data[Enemy::Type::wBirdLeft].speed = 90.f;
 		data[Enemy::Type::wBirdLeft].directions.push_back(Direction(Enemy::Type::wBirdLeft));
+		data[Enemy::Type::wBirdLeft].source = sf::Vector2i(3, 1);
+		data[Enemy::Type::wBirdLeft].endOfFrame = 160;
 
 		data[Enemy::Type::wBirdRight].texture = TextureID::Animals;
 		data[Enemy::Type::wBirdRight].textureRect = sf::IntRect(64, 192, 32, 32);
 		data[Enemy::Type::wBirdRight].speed = 90.f;
 		data[Enemy::Type::wBirdRight].directions.push_back(Direction(Enemy::Type::wBirdRight));
+		data[Enemy::Type::wBirdRight].source = sf::Vector2i(3, 2);
+		data[Enemy::Type::wBirdRight].endOfFrame = 160;
 
 		data[Enemy::Type::wBirdUp].texture = TextureID::Animals;
 		data[Enemy::Type::wBirdUp].textureRect = sf::IntRect(96, 192, 32, 32);
 		data[Enemy::Type::wBirdUp].speed = 90.f;
 		data[Enemy::Type::wBirdUp].directions.push_back(Direction(Enemy::Type::wBirdUp));
+		data[Enemy::Type::wBirdUp].source = sf::Vector2i(3, 3);
+		data[Enemy::Type::wBirdUp].endOfFrame = 160;
 
 		data[Enemy::Type::mouseDown].texture = TextureID::Animals;
 		data[Enemy::Type::mouseDown].textureRect = sf::IntRect(0, 288, 32, 32);
 		data[Enemy::Type::mouseDown].speed = 90.f;
 		data[Enemy::Type::mouseDown].directions.push_back(Direction(Enemy::Type::mouseDown));
+		data[Enemy::Type::mouseDown].source = sf::Vector2i(9, 0);
+		data[Enemy::Type::mouseDown].endOfFrame = 352;
 
 		data[Enemy::Type::mouseLeft].texture = TextureID::Animals;
 		data[Enemy::Type::mouseLeft].textureRect = sf::IntRect(32, 288, 32, 32);
 		data[Enemy::Type::mouseLeft].speed = 90.f;
 		data[Enemy::Type::mouseLeft].directions.push_back(Direction(Enemy::Type::mouseLeft));
+		data[Enemy::Type::mouseLeft].source = sf::Vector2i(9, 1);
+		data[Enemy::Type::mouseLeft].endOfFrame = 352;
 
 		data[Enemy::Type::mouseRight].texture = TextureID::Animals;
 		data[Enemy::Type::mouseRight].textureRect = sf::IntRect(64, 288, 32, 32);
 		data[Enemy::Type::mouseRight].speed = 90.f;
 		data[Enemy::Type::mouseRight].directions.push_back(Direction(Enemy::Type::mouseRight));
+		data[Enemy::Type::mouseRight].source = sf::Vector2i(9, 2);
+		data[Enemy::Type::mouseRight].endOfFrame = 352;
 
 		data[Enemy::Type::mouseUp].texture = TextureID::Animals;
 		data[Enemy::Type::mouseUp].textureRect = sf::IntRect(96, 288, 32, 32);
 		data[Enemy::Type::mouseUp].speed = 90.f;
 		data[Enemy::Type::mouseUp].directions.push_back(Direction(Enemy::Type::mouseUp));
+		data[Enemy::Type::mouseUp].source = sf::Vector2i(9, 3);
+		data[Enemy::Type::mouseUp].endOfFrame = 352;
 
 		data[Enemy::Type::roosterDown].texture = TextureID::Animals;
 		data[Enemy::Type::roosterDown].textureRect = sf::IntRect(128, 96, 32, 32);
 		data[Enemy::Type::roosterDown].speed = 90.f;
 		data[Enemy::Type::roosterDown].directions.push_back(Direction(Enemy::Type::raccoonDown));
+		data[Enemy::Type::roosterDown].source = sf::Vector2i(3, 4);
+		data[Enemy::Type::roosterDown].endOfFrame = 160;
 
 		data[Enemy::Type::roosterLeft].texture = TextureID::Animals;
 		data[Enemy::Type::roosterLeft].textureRect = sf::IntRect(160, 96, 32, 32);
 		data[Enemy::Type::roosterLeft].speed = 90.f;
 		data[Enemy::Type::roosterLeft].directions.push_back(Direction(Enemy::Type::roosterLeft));
+		data[Enemy::Type::roosterLeft].source = sf::Vector2i(3, 5);
+		data[Enemy::Type::roosterLeft].endOfFrame = 160;
 
 		data[Enemy::Type::roosterRight].texture = TextureID::Animals;
 		data[Enemy::Type::roosterRight].textureRect = sf::IntRect(192, 96, 32, 32);
 		data[Enemy::Type::roosterRight].speed = 90.f;
 		data[Enemy::Type::roosterRight].directions.push_back(Direction(Enemy::Type::roosterRight));
+		data[Enemy::Type::roosterRight].source = sf::Vector2i(3, 6);
+		data[Enemy::Type::roosterRight].endOfFrame = 160;
 
 		data[Enemy::Type::roosterUp].texture = TextureID::Animals;
 		data[Enemy::Type::roosterUp].textureRect = sf::IntRect(224, 96, 32, 32);
 		data[Enemy::Type::roosterUp].speed = 90.f;
 		data[Enemy::Type::roosterUp].directions.push_back(Direction(Enemy::Type::roosterUp));
+		data[Enemy::Type::roosterUp].source = sf::Vector2i(3, 7);
+		data[Enemy::Type::roosterUp].endOfFrame = 160;
 
 		data[Enemy::Type::raccoonDown].texture = TextureID::Raccoon;
 		data[Enemy::Type::raccoonDown].textureRect = sf::IntRect(0, 0, 32, 32);
 		data[Enemy::Type::raccoonDown].speed = 90.f;
 		data[Enemy::Type::raccoonDown].directions.push_back(Direction(Enemy::Type::raccoonDown));
+		data[Enemy::Type::raccoonDown].source = sf::Vector2i(0, 0);
+		data[Enemy::Type::raccoonDown].endOfFrame = 64;
 
 		data[Enemy::Type::raccoonLeft].texture = TextureID::Raccoon;
 		data[Enemy::Type::raccoonLeft].textureRect = sf::IntRect(32, 0, 32, 32);
 		data[Enemy::Type::raccoonLeft].speed = 90.f;
 		data[Enemy::Type::raccoonLeft].directions.push_back(Direction(Enemy::Type::raccoonLeft));
+		data[Enemy::Type::raccoonLeft].source = sf::Vector2i(0, 1);
+		data[Enemy::Type::raccoonLeft].endOfFrame = 64;
 
 		data[Enemy::Type::raccoonRight].texture = TextureID::Raccoon;
 		data[Enemy::Type::raccoonRight].textureRect = sf::IntRect(64, 0, 32, 32);
 		data[Enemy::Type::raccoonRight].speed = 90.f;
 		data[Enemy::Type::raccoonRight].directions.push_back(Direction(Enemy::Type::raccoonRight));
+		data[Enemy::Type::raccoonRight].source = sf::Vector2i(0, 2);
+		data[Enemy::Type::raccoonRight].endOfFrame = 64;
 
 		data[Enemy::Type::raccoonUp].texture = TextureID::Raccoon;
 		data[Enemy::Type::raccoonUp].textureRect = sf::IntRect(96, 0, 32, 32);
 		data[Enemy::Type::raccoonUp].speed = 90.f;
 		data[Enemy::Type::raccoonUp].directions.push_back(Direction(Enemy::Type::raccoonUp));
+		data[Enemy::Type::raccoonUp].source = sf::Vector2i(0, 3);
+		data[Enemy::Type::raccoonUp].endOfFrame = 64;
 
 		return data;
 	}

@@ -40,6 +40,7 @@ namespace GEX
 		int						hitPoints;
 		TextureID				texture;
 		sf::IntRect				textureRect;
+		sf::Vector2i			source;
 	};
 
 	struct ParticleData
@@ -54,6 +55,8 @@ namespace GEX
 		std::vector<Direction>  directions; // vector describes path of the enemies
 		sf::IntRect				textureRect;
 		float					speed;
+		sf::Vector2i			source;
+		int						endOfFrame; // end of sprite rows
 	};
 
 	struct AllyData
@@ -62,6 +65,7 @@ namespace GEX
 		std::vector<Direction>  directions; // vector describes path of the allies
 		sf::IntRect				textureRect;
 		float					speed;
+		sf::Vector2i			source;
 	};
 
 	struct SwitchData

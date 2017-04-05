@@ -10,7 +10,6 @@ namespace GEX
 {
 	const std::map<Enemy::Type, EnemyData> table = initializeEnemyData();
 
-	sf::Vector2i enemySource(2, 0);
 
 	TextureID toTextureID(Enemy::Type type)
 	{
@@ -33,7 +32,8 @@ namespace GEX
 		_sprite(TextureHolder::getInstance().get(table.at(type).texture), table.at(type).textureRect),
 		_isMarkedForRemoval(false),
 		_walkSpeed(),
-		_directionTimer()
+		_directionTimer(),
+		_source(table.at(type).source)
 	{
 		// set up the animation
 		centerOrigin(_sprite);
@@ -68,7 +68,7 @@ namespace GEX
 			setDirection(_type);
 
 			// set texture
-			_sprite.setTextureRect(sf::IntRect(enemySource.x * 32, enemySource.y * 32, 32, 32));
+			_sprite.setTextureRect(sf::IntRect(_source.x * 32, _source.y * 32, 32, 32));
 
 			// set ai velocity
 			switch (_type) {
@@ -117,35 +117,36 @@ namespace GEX
 		walkTime = _walkSpeed.getElapsedTime();
 		if (walkTime.asMilliseconds() >= 300)
 		{
-			enemySource.x++;
-			if (enemySource.x * 32 >= 96)
+			_source.x++;
+			if (_source.x * 32 >= 96)
 			{
-				enemySource.x = 0;
+				_source.x = 0;
 			}
 			_walkSpeed.restart();
 		}
+
 
 		switch (_type) {
 		case Type::wBirdUp:
 		case Type::mouseUp:
 		case Type::roosterUp:
 		case Type::raccoonUp:
-			enemySource.y = 3;
+			_source.y = 3;
 			break;
 		case Type::wBirdDown:
 		case Type::mouseDown:
 		case Type::roosterDown:
 		case Type::raccoonDown:
-			enemySource.y = 0;
+			_source.y = 0;
 			break;
 		case Type::wBirdLeft:
 		case Type::mouseLeft:
 		case Type::roosterLeft:
 		case Type::raccoonLeft:
-			enemySource.y = 1;
+			_source.y = 1;
 			break;
 		default:
-			enemySource.y = 2;
+			_source.y = 2;
 			break;
 		}
 	}
@@ -227,6 +228,11 @@ namespace GEX
 				break;
 			}
 		}
+	}
+
+	void Enemy::setSource(sf::Vector2i s)
+	{
+		_source = s;
 	}
 
 	bool Enemy::isMarkedForRemoval() const
