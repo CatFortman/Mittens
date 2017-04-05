@@ -343,10 +343,10 @@ namespace GEX
 		//addEnemies();
 
 		// Switches
-		/*std::unique_ptr<Switch> blue1(new Switch(Switch::Type::GreenLeft));
+		std::unique_ptr<Switch> blue1(new Switch(Switch::Type::GreenLeft));
 		_switch = blue1.get();
-		_switch->setPosition(_spawnPosition);
-		_sceneLayers[Ground]->attatchChild(std::move(blue1));*/
+		_switch->setPosition(320, 2368);
+		_sceneLayers[Ground]->attatchChild(std::move(blue1));
 
 		// Idle
 		std::unique_ptr<Cat> Cat(new Cat(Cat::Type::Down));
