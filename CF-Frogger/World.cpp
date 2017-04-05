@@ -360,9 +360,9 @@ namespace GEX
 		r->setPosition(_spawnPosition);
 		_sceneLayers[Ground]->attatchChild(std::move(raccoon));
 
-		std::unique_ptr<Ally> frog(new Ally(Ally::Type::bunnyDown));
-		Ally* f = frog.get();
-		f->setPosition((_spawnPosition.x - 80), (_spawnPosition.y + 40));
+		std::unique_ptr<Enemy> frog(new Enemy(Enemy::Type::roosterDown));
+		Enemy* f = frog.get();
+		f->setPosition((_spawnPosition.x - 30), (_spawnPosition.y - 40));
 		_sceneLayers[Ground]->attatchChild(std::move(frog));
 
 	}

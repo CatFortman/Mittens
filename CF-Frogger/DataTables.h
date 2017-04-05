@@ -65,7 +65,8 @@ namespace GEX
 		std::vector<Direction>  directions; // vector describes path of the allies
 		sf::IntRect				textureRect;
 		float					speed;
-		sf::Vector2i			source;
+		sf::Vector2i			source;     // keep track of x and y of sprite 
+		int						endOfFrame; // end of sprite rows
 	};
 
 	struct SwitchData

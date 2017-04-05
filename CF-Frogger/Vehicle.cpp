@@ -118,15 +118,17 @@ namespace GEX
 		if (walkTime.asMilliseconds() >= 300)
 		{
 			_source.x++;
-			if (_source.x * 32 >= 96)
+			if (_source.x * 32 >= table.at(_type).endOfFrame)
 			{
-				_source.x = 0;
+				_source.x = table.at(_type).source.x;
 			}
 			_walkSpeed.restart();
 		}
 
+		_source.y = table.at(_type).source.y;
 
-		switch (_type) {
+
+		/*switch (_type) {
 		case Type::wBirdUp:
 		case Type::mouseUp:
 		case Type::roosterUp:
@@ -148,7 +150,7 @@ namespace GEX
 		default:
 			_source.y = 2;
 			break;
-		}
+		}*/
 	}
 
 	void Enemy::setDirection(Enemy::Type type)

@@ -133,101 +133,141 @@ namespace GEX
 		data[Ally::Type::wCatDown].textureRect = sf::IntRect(0, 0, 32, 32);
 		data[Ally::Type::wCatDown].speed = 90.f;
 		data[Ally::Type::wCatDown].directions.push_back(Direction(Ally::Type::wCatDown));
+		data[Ally::Type::wCatDown].source = sf::Vector2i(0, 0);
+		data[Ally::Type::wCatDown].endOfFrame = 64;
 
 		data[Ally::Type::wCatLeft].texture = TextureID::Animals;
 		data[Ally::Type::wCatLeft].textureRect = sf::IntRect(32, 0, 32, 32);
 		data[Ally::Type::wCatLeft].speed = 90.f;
 		data[Ally::Type::wCatLeft].directions.push_back(Direction(Ally::Type::wCatLeft));
+		data[Ally::Type::wCatLeft].source = sf::Vector2i(0, 1);
+		data[Ally::Type::wCatLeft].endOfFrame = 64;
 
 		data[Ally::Type::wCatRight].texture = TextureID::Animals;
 		data[Ally::Type::wCatRight].textureRect = sf::IntRect(64, 0, 32, 32);
 		data[Ally::Type::wCatRight].speed = 90.f;
 		data[Ally::Type::wCatRight].directions.push_back(Direction(Ally::Type::wCatRight));
+		data[Ally::Type::wCatRight].source = sf::Vector2i(0, 2);
+		data[Ally::Type::wCatRight].endOfFrame = 64;
 
 		data[Ally::Type::wCatUp].texture = TextureID::Animals;
 		data[Ally::Type::wCatUp].textureRect = sf::IntRect(96, 0, 32, 32);
 		data[Ally::Type::wCatUp].speed = 90.f;
 		data[Ally::Type::wCatUp].directions.push_back(Direction(Ally::Type::wCatUp));
+		data[Ally::Type::wCatUp].source = sf::Vector2i(0, 3);
+		data[Ally::Type::wCatUp].endOfFrame = 64;
 
 		data[Ally::Type::frogDown].texture = TextureID::Animals;
 		data[Ally::Type::frogDown].textureRect = sf::IntRect(128, 192, 32, 32);
 		data[Ally::Type::frogDown].speed = 90.f;
 		data[Ally::Type::frogDown].directions.push_back(Direction(Ally::Type::frogDown));
+		data[Ally::Type::frogDown].source = sf::Vector2i(6, 4);
+		data[Ally::Type::frogDown].endOfFrame = 256;
 
 		data[Ally::Type::frogLeft].texture = TextureID::Animals;
 		data[Ally::Type::frogLeft].textureRect = sf::IntRect(160, 192, 32, 32);
 		data[Ally::Type::frogLeft].speed = 90.f;
 		data[Ally::Type::frogLeft].directions.push_back(Direction(Ally::Type::frogLeft));
+		data[Ally::Type::frogLeft].source = sf::Vector2i(6, 5);
+		data[Ally::Type::frogLeft].endOfFrame = 256;
 
 		data[Ally::Type::frogRight].texture = TextureID::Animals;
 		data[Ally::Type::frogRight].textureRect = sf::IntRect(192, 192, 32, 32);
 		data[Ally::Type::frogRight].speed = 90.f;
 		data[Ally::Type::frogRight].directions.push_back(Direction(Ally::Type::frogRight));
+		data[Ally::Type::frogRight].source = sf::Vector2i(6, 6);
+		data[Ally::Type::frogRight].endOfFrame = 256;
 
 		data[Ally::Type::frogUp].texture = TextureID::Animals;
 		data[Ally::Type::frogUp].textureRect = sf::IntRect(224, 192, 32, 32);
 		data[Ally::Type::frogUp].speed = 90.f;
 		data[Ally::Type::frogUp].directions.push_back(Direction(Ally::Type::frogUp));
+		data[Ally::Type::frogUp].source = sf::Vector2i(6, 7);
+		data[Ally::Type::frogUp].endOfFrame = 256;
 
 		data[Ally::Type::bunnyDown].texture = TextureID::Animals;
 		data[Ally::Type::bunnyDown].textureRect = sf::IntRect(128, 288, 32, 32);
 		data[Ally::Type::bunnyDown].speed = 90.f;
 		data[Ally::Type::bunnyDown].directions.push_back(Direction(Ally::Type::bunnyDown));
+		data[Ally::Type::bunnyDown].source = sf::Vector2i(9, 4);
+		data[Ally::Type::bunnyDown].endOfFrame = 352;
 
 		data[Ally::Type::bunnyLeft].texture = TextureID::Animals;
 		data[Ally::Type::bunnyLeft].textureRect = sf::IntRect(160, 288, 32, 32);
 		data[Ally::Type::bunnyLeft].speed = 90.f;
 		data[Ally::Type::bunnyLeft].directions.push_back(Direction(Ally::Type::bunnyLeft));
+		data[Ally::Type::bunnyLeft].source = sf::Vector2i(9, 5);
+		data[Ally::Type::bunnyLeft].endOfFrame = 352;
 
 		data[Ally::Type::bunnyRight].texture = TextureID::Animals;
 		data[Ally::Type::bunnyRight].textureRect = sf::IntRect(192, 288, 32, 32);
 		data[Ally::Type::bunnyRight].speed = 90.f;
 		data[Ally::Type::bunnyRight].directions.push_back(Direction(Ally::Type::bunnyRight));
+		data[Ally::Type::bunnyRight].source = sf::Vector2i(9, 6);
+		data[Ally::Type::bunnyRight].endOfFrame = 352;
 
 		data[Ally::Type::bunnyUp].texture = TextureID::Animals;
 		data[Ally::Type::bunnyUp].textureRect = sf::IntRect(224, 288, 32, 32);
 		data[Ally::Type::bunnyUp].speed = 90.f;
 		data[Ally::Type::bunnyUp].directions.push_back(Direction(Ally::Type::bunnyUp));
+		data[Ally::Type::bunnyUp].source = sf::Vector2i(9, 7);
+		data[Ally::Type::bunnyUp].endOfFrame = 352;
 
 		data[Ally::Type::chickDown].texture = TextureID::Animals;
 		data[Ally::Type::chickDown].textureRect = sf::IntRect(128, 0, 32, 32);
 		data[Ally::Type::chickDown].speed = 90.f;
 		data[Ally::Type::chickDown].directions.push_back(Direction(Ally::Type::chickDown));
+		data[Ally::Type::chickDown].source = sf::Vector2i(0, 4);
+		data[Ally::Type::chickDown].endOfFrame = 64;
 
 		data[Ally::Type::chickLeft].texture = TextureID::Animals;
 		data[Ally::Type::chickLeft].textureRect = sf::IntRect(160, 0, 32, 32);
 		data[Ally::Type::chickLeft].speed = 90.f;
 		data[Ally::Type::chickLeft].directions.push_back(Direction(Ally::Type::chickLeft));
+		data[Ally::Type::chickLeft].source = sf::Vector2i(0, 5);
+		data[Ally::Type::chickLeft].endOfFrame = 64;
 			 			 
 		data[Ally::Type::chickRight].texture = TextureID::Animals;
 		data[Ally::Type::chickRight].textureRect = sf::IntRect(192, 0, 32, 32);
 		data[Ally::Type::chickRight].speed = 90.f;
 		data[Ally::Type::chickRight].directions.push_back(Direction(Ally::Type::chickRight));
+		data[Ally::Type::chickRight].source = sf::Vector2i(0, 6);
+		data[Ally::Type::chickRight].endOfFrame = 64;
 
 		data[Ally::Type::chickUp].texture = TextureID::Animals;
 		data[Ally::Type::chickUp].textureRect = sf::IntRect(224, 0, 32, 32);
 		data[Ally::Type::chickUp].speed = 90.f;
 		data[Ally::Type::chickUp].directions.push_back(Direction(Ally::Type::chickUp));
+		data[Ally::Type::chickUp].source = sf::Vector2i(0, 7);
+		data[Ally::Type::chickUp].endOfFrame = 64;
 			 
 		data[Ally::Type::seagullDown].texture = TextureID::Animals;
 		data[Ally::Type::seagullDown].textureRect = sf::IntRect(0, 96, 32, 32);
 		data[Ally::Type::seagullDown].speed = 90.f;
 		data[Ally::Type::seagullDown].directions.push_back(Direction(Ally::Type::seagullDown));
+		data[Ally::Type::seagullDown].source = sf::Vector2i(3, 0);
+		data[Ally::Type::seagullDown].endOfFrame = 160;
 			 			 
 		data[Ally::Type::seagullLeft].texture = TextureID::Animals;
 		data[Ally::Type::seagullLeft].textureRect = sf::IntRect(32, 96, 32, 32);
 		data[Ally::Type::seagullLeft].speed = 90.f;
 		data[Ally::Type::seagullLeft].directions.push_back(Direction(Ally::Type::seagullLeft));
+		data[Ally::Type::seagullLeft].source = sf::Vector2i(3, 1);
+		data[Ally::Type::seagullLeft].endOfFrame = 160;
 						 
 		data[Ally::Type::seagullRight].texture = TextureID::Animals;
 		data[Ally::Type::seagullRight].textureRect = sf::IntRect(64, 96, 32, 32);
 		data[Ally::Type::seagullRight].speed = 90.f;
 		data[Ally::Type::seagullRight].directions.push_back(Direction(Ally::Type::seagullRight));
+		data[Ally::Type::seagullRight].source = sf::Vector2i(3, 2);
+		data[Ally::Type::seagullRight].endOfFrame = 160;
 			 			 
 		data[Ally::Type::seagullUp].texture = TextureID::Animals;
 		data[Ally::Type::seagullUp].textureRect = sf::IntRect(96, 96, 32, 32);
 		data[Ally::Type::seagullUp].speed = 90.f;
 		data[Ally::Type::seagullUp].directions.push_back(Direction(Ally::Type::seagullUp));
+		data[Ally::Type::seagullUp].source = sf::Vector2i(3, 3);
+		data[Ally::Type::seagullUp].endOfFrame = 160;
 
 		return data;
 	}
@@ -240,29 +280,29 @@ namespace GEX
 		data[Enemy::Type::wBirdDown].textureRect = sf::IntRect( 0, 192, 32, 32);
 		data[Enemy::Type::wBirdDown].speed = 90.f;
 		data[Enemy::Type::wBirdDown].directions.push_back(Direction(Enemy::Type::wBirdDown));
-		data[Enemy::Type::wBirdDown].source = sf::Vector2i(3, 0);
-		data[Enemy::Type::wBirdDown].endOfFrame = 160;
+		data[Enemy::Type::wBirdDown].source = sf::Vector2i(6, 0);
+		data[Enemy::Type::wBirdDown].endOfFrame = 256;
 
 		data[Enemy::Type::wBirdLeft].texture = TextureID::Animals;
 		data[Enemy::Type::wBirdLeft].textureRect = sf::IntRect(32, 192, 32, 32);
 		data[Enemy::Type::wBirdLeft].speed = 90.f;
 		data[Enemy::Type::wBirdLeft].directions.push_back(Direction(Enemy::Type::wBirdLeft));
-		data[Enemy::Type::wBirdLeft].source = sf::Vector2i(3, 1);
-		data[Enemy::Type::wBirdLeft].endOfFrame = 160;
+		data[Enemy::Type::wBirdLeft].source = sf::Vector2i(6, 1);
+		data[Enemy::Type::wBirdLeft].endOfFrame = 256;
 
 		data[Enemy::Type::wBirdRight].texture = TextureID::Animals;
 		data[Enemy::Type::wBirdRight].textureRect = sf::IntRect(64, 192, 32, 32);
 		data[Enemy::Type::wBirdRight].speed = 90.f;
 		data[Enemy::Type::wBirdRight].directions.push_back(Direction(Enemy::Type::wBirdRight));
-		data[Enemy::Type::wBirdRight].source = sf::Vector2i(3, 2);
-		data[Enemy::Type::wBirdRight].endOfFrame = 160;
+		data[Enemy::Type::wBirdRight].source = sf::Vector2i(6, 2);
+		data[Enemy::Type::wBirdRight].endOfFrame = 256;
 
 		data[Enemy::Type::wBirdUp].texture = TextureID::Animals;
 		data[Enemy::Type::wBirdUp].textureRect = sf::IntRect(96, 192, 32, 32);
 		data[Enemy::Type::wBirdUp].speed = 90.f;
 		data[Enemy::Type::wBirdUp].directions.push_back(Direction(Enemy::Type::wBirdUp));
-		data[Enemy::Type::wBirdUp].source = sf::Vector2i(3, 3);
-		data[Enemy::Type::wBirdUp].endOfFrame = 160;
+		data[Enemy::Type::wBirdUp].source = sf::Vector2i(6, 3);
+		data[Enemy::Type::wBirdUp].endOfFrame = 256;
 
 		data[Enemy::Type::mouseDown].texture = TextureID::Animals;
 		data[Enemy::Type::mouseDown].textureRect = sf::IntRect(0, 288, 32, 32);
