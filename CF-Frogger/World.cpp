@@ -59,8 +59,6 @@ namespace GEX
 		_sceneLayers(),
 		_worldBounds(0.f, 0.f, 2240, 2560), //2240 2560
 		_spawnPosition(128, 2432),
-		_vehicleSpawnTimer(),
-		_riverSpawnTimer(),
 		_queue(),
 		_mGameMap(),
 		_player(nullptr)
@@ -217,132 +215,63 @@ namespace GEX
 
 	void World::spawnEnemies()
 	{
-		//auto spawnV = _vehicleSpawnPoints.back();	// get's the spawn point and vehicle from vector
-		//auto spawnVPos = spawnV;	// keeps the spawn
-		//std::unique_ptr<Vehicle> temp(new Vehicle(spawnV.type)); // creates the vehicle with spawn position
-
-		// if it has been five seconds or the vehicle is not on the map then add it to the map 
-		/*if ((_vehicleSpawnTimer.getElapsedTime() >= sf::seconds(1)) || (!getBattlefieldBounds().intersects(temp->getBoundingRect())))
-		{
-			_vehicles.push_back(temp.get());
-
-			temp->setPosition(spawnV.x, spawnV.y);
-			_sceneLayers[Ground]->attatchChild(std::move(temp));
-			_vehicleSpawnPoints.pop_back();
-			_vehicleSpawnPoints.push_front(spawnVPos);
-
-			_vehicleSpawnTimer.restart();
-		}
-
-		auto spawnR = _riverSpawnPoints.back();	// get's the spawn point and river from vector
-		auto spawnRPos = spawnR;	// keeps the spawn
-		std::unique_ptr<RiverObject> tempR(new RiverObject(spawnR.type)); // creates the river object with spawn position
-
-																 // if it has been five seconds or the vehicle is not on the map then add it to the map
-		if ((_riverSpawnTimer.getElapsedTime() >= sf::seconds(1)) || (!getBattlefieldBounds().intersects(tempR->getBoundingRect())))
-		{
-			//_vehicles.push_back(temp.get());
-
-			tempR->setPosition(spawnR.x, spawnR.y);
-			_sceneLayers[Ground]->attatchChild(std::move(tempR));
-			_riverSpawnPoints.pop_back();
-			_riverSpawnPoints.push_front(spawnRPos);
-
-			_riverSpawnTimer.restart();
-		}*/
+		
 	}
 
-	void World::addEnemies()
+	void World::spawnAllies()
 	{
-		// add enemy spawn points
-	/*	addEnemy(Vehicle::Type::Car, 250, 120);
-		addEnemy(Vehicle::Type::RaceCarL, 250, 40);
-		addEnemy(Vehicle::Type::RaceCarR, -235, 160);
-		addEnemy(Vehicle::Type::Tractor, -235, 80);
-		addEnemy(Vehicle::Type::Truck, 250, 200);
+		std::unique_ptr<Ally> frog(new Ally(Ally::Type::frogDown));
+		Ally* a1 = frog.get();
+		a1->setPosition(420, 2432);
+		_sceneLayers[Ground]->attatchChild(std::move(frog));
 
-		addEnemy(RiverObject::Type::tree1, -235, 360);
-		addEnemy(RiverObject::Type::tree1, -235, 320);
-		addEnemy(RiverObject::Type::tree2, -235, 440);
-		addEnemy(RiverObject::Type::threeTurtles1, 235, 280);
-		addEnemy(RiverObject::Type::turtles1, 235, 400);
+		_allies.push_back(a1);
 
-		//std::sort(_vehicleSpawnPoints.begin(), _vehicleSpawnPoints.end(), [](SpawnPointVehicle lhs, SpawnPointVehicle rhs) {return lhs.y < rhs.y;	});
-		std::sort(_riverSpawnPoints.begin(), _riverSpawnPoints.end(), [](SpawnPointRiverObject lhs, SpawnPointRiverObject rhs) {return lhs.y < rhs.y;	});
-	*/
+		std::unique_ptr<Ally> bunny(new Ally(Ally::Type::bunnyDown));
+		Ally* a2 = bunny.get();
+		a2->setPosition(648, 2048);
+		_sceneLayers[Ground]->attatchChild(std::move(bunny));
+
+		_allies.push_back(a2);
+
+		std::unique_ptr<Ally> chick(new Ally(Ally::Type::chickDown));
+		Ally* a3 = chick.get();
+		a3->setPosition(1372, 1792);
+		_sceneLayers[Ground]->attatchChild(std::move(chick));
+
+		_allies.push_back(a3);
+
+		std::unique_ptr<Ally> seagull(new Ally(Ally::Type::seagullDown));
+		Ally* a4 = seagull.get();
+		a4->setPosition(2112, 1024);
+		_sceneLayers[Ground]->attatchChild(std::move(seagull));
+
+		_allies.push_back(a4);
+
+		std::unique_ptr<Ally> wcat(new Ally(Ally::Type::wCatDown));
+		Ally* a5 = wcat.get();
+		a5->setPosition(832, 1664);
+		_sceneLayers[Ground]->attatchChild(std::move(wcat));
+
+		_allies.push_back(a5);
+
+		std::unique_ptr<Ally> frog2(new Ally(Ally::Type::frogDown));
+		Ally* a6 = frog2.get();
+		a6->setPosition(640, 192);
+		_sceneLayers[Ground]->attatchChild(std::move(frog2));
+
+		_allies.push_back(a6);
+
+		std::unique_ptr<Ally> chick2(new Ally(Ally::Type::chickDown));
+		Ally* a7 = chick2.get();
+		a7->setPosition(1088, 832);
+		_sceneLayers[Ground]->attatchChild(std::move(chick2));
+
+		_allies.push_back(a7);
 	}
-
-	/*void World::addEnemy(Vehicle::Type type, float relX, float relY)
+	
+	void World::spawnSwitches() 
 	{
-		addEnemy(SpawnPointVehicle(type, relX, relY));
-	}*/
-
-	/*void World::addEnemy(RiverObject::Type type, float relX, float relY)
-	{
-		addEnemy(SpawnPointRiverObject(type, relX, relY));
-	}*/
-
-	/*void World::addEnemy(SpawnPointVehicle point)
-	{
-		point.x = _spawnPosition.x + point.x;
-		point.y = _spawnPosition.y - point.y;
-		_vehicleSpawnPoints.push_back(point);
-	}*/
-
-	/*void World::addEnemy(SpawnPointRiverObject point)
-	{
-		point.x = _spawnPosition.x + point.x;
-		point.y = _spawnPosition.y - point.y;
-		_riverSpawnPoints.push_back(point);
-	}*/
-
-	void World::buildScene()
-	{
-		// LAYER NODES FOR SCENE GRAPH
-		for (std::size_t i = 0; i < LayerCount; i++)
-		{
-			Category::type category = (i == Ground) ? Category::sceneGroundLayer : Category::none;
-			SceneNode::ptr layer(new SceneNode(category));
-			_sceneLayers[i] = layer.get();
-			_sceneGraph.attatchChild(std::move(layer));
-		}
-
-		// Map
-		std::unique_ptr<Map> map(new Map());
-		_mGameMap = map.get();
-		_mGameMap->LoadMap("Media/Map1.map");
-		_sceneLayers[Ground]->attatchChild(std::move(map));
-
-		//Switches
-
-		// Cat lives
-		sf::Texture& texture = TextureHolder::getInstance().get(TextureID::Life);
-		sf::IntRect textureRect = sf::IntRect(0, 0, 32, 42);
-
-		std::unique_ptr<SpriteNode> CatLife1(new SpriteNode(texture, textureRect));
-		SpriteNode* _CatLife1 = CatLife1.get();
-		CatLife1->setPosition((_worldView.getSize().x - 90), (_worldView.getSize().y - 310));
-		_sceneLayers[Ground]->attatchChild(std::move(CatLife1));
-
-
-		std::unique_ptr<SpriteNode> CatLife2(new SpriteNode(texture, textureRect));
-		SpriteNode* _CatLife2 = CatLife2.get();
-		CatLife2->setPosition((_worldView.getSize().x - 65), (_worldView.getSize().y - 310));
-		_sceneLayers[Ground]->attatchChild(std::move(CatLife2));
-
-		std::unique_ptr<SpriteNode> CatLife3(new SpriteNode(texture, textureRect));
-		SpriteNode* _CatLife3 = CatLife3.get();
-		CatLife3->setPosition((_worldView.getSize().x - 40), (_worldView.getSize().y - 310));
-		_sceneLayers[Ground]->attatchChild(std::move(CatLife3));
-
-		_lives.push_back(_CatLife1);
-		_lives.push_back(_CatLife2);
-		_lives.push_back(_CatLife3);
-
-		// add the enemies
-		//addEnemies();
-
-		// Switches
 		std::unique_ptr<Switch> blue1(new Switch(Switch::Type::BlueLeft));
 		Switch* s1 = blue1.get();
 		s1->setPosition(320, 2304);
@@ -398,6 +327,56 @@ namespace GEX
 		_sceneLayers[Ground]->attatchChild(std::move(red3));
 
 		_switches.push_back(s8);
+	}
+
+	void World::buildScene()
+	{
+		// LAYER NODES FOR SCENE GRAPH
+		for (std::size_t i = 0; i < LayerCount; i++)
+		{
+			Category::type category = (i == Ground) ? Category::sceneGroundLayer : Category::none;
+			SceneNode::ptr layer(new SceneNode(category));
+			_sceneLayers[i] = layer.get();
+			_sceneGraph.attatchChild(std::move(layer));
+		}
+
+		// Map
+		std::unique_ptr<Map> map(new Map());
+		_mGameMap = map.get();
+		_mGameMap->LoadMap("Media/Map1.map");
+		_sceneLayers[Ground]->attatchChild(std::move(map));
+
+		//Switches
+		spawnSwitches();
+
+		// Cat lives
+		sf::Texture& texture = TextureHolder::getInstance().get(TextureID::Life);
+		sf::IntRect textureRect = sf::IntRect(0, 0, 32, 42);
+
+		std::unique_ptr<SpriteNode> CatLife1(new SpriteNode(texture, textureRect));
+		SpriteNode* _CatLife1 = CatLife1.get();
+		CatLife1->setPosition((_worldView.getSize().x - 90), (_worldView.getSize().y - 310));
+		_sceneLayers[Ground]->attatchChild(std::move(CatLife1));
+
+
+		std::unique_ptr<SpriteNode> CatLife2(new SpriteNode(texture, textureRect));
+		SpriteNode* _CatLife2 = CatLife2.get();
+		CatLife2->setPosition((_worldView.getSize().x - 65), (_worldView.getSize().y - 310));
+		_sceneLayers[Ground]->attatchChild(std::move(CatLife2));
+
+		std::unique_ptr<SpriteNode> CatLife3(new SpriteNode(texture, textureRect));
+		SpriteNode* _CatLife3 = CatLife3.get();
+		CatLife3->setPosition((_worldView.getSize().x - 40), (_worldView.getSize().y - 310));
+		_sceneLayers[Ground]->attatchChild(std::move(CatLife3));
+
+		_lives.push_back(_CatLife1);
+		_lives.push_back(_CatLife2);
+		_lives.push_back(_CatLife3);
+
+		// add the enemies
+		//addEnemies();
+
+		// Switches
 
 		// Idle
 		std::unique_ptr<Cat> Cat(new Cat(Cat::Type::Down));
@@ -405,6 +384,9 @@ namespace GEX
 		_player->setPosition(_spawnPosition);
 
 		_sceneLayers[Ground]->attatchChild(std::move(Cat));
+
+		// add allies to map
+		spawnAllies();
 
 		std::unique_ptr<Enemy> raccoon(new Enemy(Enemy::Type::raccoonDown));
 		Enemy* r = raccoon.get();

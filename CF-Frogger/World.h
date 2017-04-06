@@ -99,11 +99,8 @@ namespace GEX
 		void			respawnPlayer();
 
 		void			spawnEnemies();
-		void			addEnemies();
-	//	void			addEnemy(Vehicle::Type type, float relX, float relY);
-		//void			addEnemy(RiverObject::Type type, float relX, float relY);
-		//void			addEnemy(SpawnPointVehicle point);
-		//void			addEnemy(SpawnPointRiverObject point);
+		void			spawnAllies();
+		void			spawnSwitches();
 
 		float			interSectionAmount(sf::FloatRect a, sf::FloatRect b);
 		void			handleEntityCollisions();
@@ -134,20 +131,11 @@ namespace GEX
 		float								_scrollSpeed;
 		Cat*								_player;
 
-		sf::Clock							_vehicleSpawnTimer;
-		sf::Clock							_riverSpawnTimer;
-
-	//	std::deque<SpawnPointVehicle>		_vehicleSpawnPoints;
-	//	std::deque<SpawnPointRiverObject>	_riverSpawnPoints;
-	//	std::vector<Vehicle*>				_vehicles;
-	//	std::vector<Vehicle*>				_activeEnemies;
-
-		//std::unique_ptr<MapSpriteNode>		_mapNode;
 		Map*								_mGameMap;
 
 		std::vector<TileCollisionElement>   _tileCollisions;
 
-		Switch*								_switch;
+		std::vector<Ally*>					_allies;
 		std::vector<Switch*>				_switches;
 
 		std::vector<SpriteNode*>			_lives;

@@ -216,7 +216,7 @@ namespace GEX
 		data[Ally::Type::chickDown].texture = TextureID::Animals;
 		data[Ally::Type::chickDown].textureRect = sf::IntRect(128, 0, 32, 32);
 		data[Ally::Type::chickDown].speed = 90.f;
-		data[Ally::Type::chickDown].directions.push_back(Direction(Ally::Type::chickDown));
+		data[Ally::Type::chickDown].directions.push_back(Direction(Ally::Type::chickRight));
 		data[Ally::Type::chickDown].source = sf::Vector2i(0, 4);
 		data[Ally::Type::chickDown].endOfFrame = 64;
 
@@ -237,7 +237,7 @@ namespace GEX
 		data[Ally::Type::chickUp].texture = TextureID::Animals;
 		data[Ally::Type::chickUp].textureRect = sf::IntRect(224, 0, 32, 32);
 		data[Ally::Type::chickUp].speed = 90.f;
-		data[Ally::Type::chickUp].directions.push_back(Direction(Ally::Type::chickUp));
+		data[Ally::Type::chickUp].directions.push_back(Direction(Ally::Type::chickLeft));
 		data[Ally::Type::chickUp].source = sf::Vector2i(0, 7);
 		data[Ally::Type::chickUp].endOfFrame = 64;
 			 
@@ -251,14 +251,14 @@ namespace GEX
 		data[Ally::Type::seagullLeft].texture = TextureID::Animals;
 		data[Ally::Type::seagullLeft].textureRect = sf::IntRect(32, 96, 32, 32);
 		data[Ally::Type::seagullLeft].speed = 90.f;
-		data[Ally::Type::seagullLeft].directions.push_back(Direction(Ally::Type::seagullLeft));
+		data[Ally::Type::seagullLeft].directions.push_back(Direction(Ally::Type::seagullDown));
 		data[Ally::Type::seagullLeft].source = sf::Vector2i(3, 1);
 		data[Ally::Type::seagullLeft].endOfFrame = 160;
 						 
 		data[Ally::Type::seagullRight].texture = TextureID::Animals;
 		data[Ally::Type::seagullRight].textureRect = sf::IntRect(64, 96, 32, 32);
 		data[Ally::Type::seagullRight].speed = 90.f;
-		data[Ally::Type::seagullRight].directions.push_back(Direction(Ally::Type::seagullRight));
+		data[Ally::Type::seagullRight].directions.push_back(Direction(Ally::Type::seagullUp));
 		data[Ally::Type::seagullRight].source = sf::Vector2i(3, 2);
 		data[Ally::Type::seagullRight].endOfFrame = 160;
 			 			 

@@ -10,8 +10,6 @@ namespace GEX
 {
 	const std::map<Ally::Type, AllyData> table = initializeAllyData();
 
-	sf::Vector2i allySource(2, 0);
-
 	TextureID toTextureID(Ally::Type type)
 	{
 		return TextureID::Animals;
@@ -22,7 +20,8 @@ namespace GEX
 		_sprite(TextureHolder::getInstance().get(table.at(type).texture), table.at(type).textureRect),
 		_isMarkedForRemoval(false),
 		_walkSpeed(),
-		_directionTimer()
+		_directionTimer(),
+		_source(table.at(type).source)
 	{
 		// set up the animation
 		centerOrigin(_sprite);
@@ -57,7 +56,7 @@ namespace GEX
 			setDirection(_type);
 
 			// set texture
-			_sprite.setTextureRect(sf::IntRect(allySource.x * 32, allySource.y * 32, 32, 32));
+			_sprite.setTextureRect(sf::IntRect(_source.x * 32, _source.y * 32, 32, 32));
 
 			// set ai velocity
 			switch (_type) {
@@ -106,42 +105,18 @@ namespace GEX
 		walkTime = _walkSpeed.getElapsedTime();
 		if (walkTime.asMilliseconds() >= 300)
 		{
-			allySource.x++;
-			if (allySource.x * 32 >= allySource.x * 3)
+			_source.x++;
+			if (_source.x * 32 >= table.at(_type).endOfFrame)
 			{
-				// set ai velocity
-				switch (_type) {
-				case Type::wCatDown:
-				case Type::wCatLeft:
-				case Type::wCatRight:
-				case Type::wCatUp:
-				case Type::chickDown:
-				case Type::chickLeft:
-				case Type::chickRight:
-				case Type::chickUp:
-					allySource.x = 0;
-					break;
-				case Type::seagullDown:
-				case Type::seagullLeft:
-				case Type::seagullRight:
-				case Type::seagullUp:
-					allySource.x = 3;
-					break;
-				case Type::frogDown:
-				case Type::frogLeft:
-				case Type::frogRight:
-				case Type::frogUp:
-					allySource.x = 6;
-					break;
-				default:
-					allySource.x = 9;
-					break;
-				}
+				_source.x = table.at(_type).source.x;
+
 			}
 			_walkSpeed.restart();
 		}
 
-		switch (_type) {
+		_source.y = table.at(_type).source.y;
+
+		/*switch (_type) {
 		case Type::frogUp:
 		case Type::bunnyUp:
 		case Type::chickUp:
@@ -163,7 +138,7 @@ namespace GEX
 		default:
 			allySource.y = 2;
 			break;
-		}
+		}*/
 	}
 
 	void Ally::setDirection(Ally::Type type)
@@ -243,6 +218,11 @@ namespace GEX
 				break;
 			}
 		}
+	}
+
+	void Ally::setSource(sf::Vector2i s)
+	{
+		_source = s;
 	}
 
 	bool Ally::isMarkedForRemoval() const
